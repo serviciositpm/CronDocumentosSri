@@ -1,0 +1,74 @@
+export interface DetalleFactura {
+    item: string;
+    codigoaux: string;
+    description: string;
+    quantity: number;
+    price: number;
+    desc: number;
+    preciosinimp: number;
+    valorimp: number;
+    totalitem: number;
+    detinfoadicional: string;
+}
+export interface Reembolso {
+    documentreem: string;
+    identificationreem: string;
+    issuedatereem: string;
+    subiva15reem: number;
+    subiva5reem: number;
+    sub0reem: number;
+    iva15reem: number;
+    iva5reem: number;
+    totalreem: number;
+}
+export class Factura {
+  constructor(
+    public readonly nombrearchivo: string,
+    public readonly fechaEmision: string,
+    public readonly dirEstablecimiento: string,
+    public readonly contribuyenteEspecial: string,
+    public readonly obligadoContabilidad: string,
+    public readonly tipoIdentificacionComprador: string,
+    public readonly razonSocialComprador: string,
+    public readonly identificacionComprador: string,
+    public readonly direccionComprador: string,
+    public readonly totalSinImpuestos: number,
+    public readonly propina: number,
+    public readonly importeTotal: number,
+    public readonly totalDescuento: number,
+    public readonly moneda: string,
+    public readonly guiaRemision: string,
+    public readonly ambiente: string,
+    public readonly tipoEmision: string,
+    public readonly razonSocial: string,
+    public readonly nombreComercial: string,
+    public readonly ruc: string,
+    public readonly claveAcceso: string,
+    public readonly codDoc: string,
+    public readonly estab: string,
+    public readonly ptoEmi: string,
+    public readonly secuencial: string,
+    public readonly dirMatriz: string,
+    public readonly agenteRetencion: string,
+    public readonly cadenaAgenteRetencion: string,
+    public readonly contribuyenteRimpe: string,
+    public readonly baseImponible12: number,
+    public readonly baseImponible15: number,
+    public readonly baseImponible5: number,
+    public readonly baseImponible0: number,
+    public readonly noobjetoiva: number,
+    public readonly excentoiva: number,
+    public readonly valor: number,
+    public readonly valorIva15: number,
+    public readonly valorIva5: number,
+    public readonly irbpnr: number,
+    public readonly formaPago: string,
+    public readonly total: number,
+    public readonly plazo: number,
+    public readonly unidadTiempo: string,
+    public readonly detalles: DetalleFactura[],
+    public readonly datosinfoadicional: Array<{ campo: string; valorcampo: string }>,
+    public readonly reembolsos: Reembolso[],
+    public readonly codDocReembolso: string
+  ) {}
+}

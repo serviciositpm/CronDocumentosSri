@@ -1,0 +1,504 @@
+
+<style>
+    html, body, h1, h2, h3, h4, h5, h6 {
+        font-family: "Bookman L", bold, sans-serif;
+    }
+
+    .Descripcion1 {
+        font-weight: bold;
+    }
+
+    .BordesTablas {
+        border: 2px solid;
+        border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-collapse: separate;
+    }
+
+    .BordesTablasDetalle {
+        border: 2px solid;
+        border-collapse: separate;
+    }
+    
+    /*Tabla Info Adicional*/
+    .BordesTablasAdi {
+        border: 2px solid;
+        border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-collapse: collapse;
+        width: 750px;
+    }
+
+    .BordesTablasAdi th, .BordesTablasAdi td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+
+    .BordesTablasAdi td {
+        word-wrap: break-word;
+        white-space: pre-wrap;
+    }
+
+    .Descripcion1Adi {
+        width: 195px;
+        font-weight: bold;
+    }
+
+    .DatosAdi {
+        width: 500px;
+    }
+</style>
+
+
+<table border="0" width="1160" cellspacing="5">
+    <tr>
+        <td>
+            <img width="490" height="180" alt="No existe imagen en doc/img/ " src="img/LogoPromariscoNuevaPescanova.jpg" />
+        </td>
+        <td rowspan="2" class="BordesTablas">
+            <table border="0" height="100%" width="100%">
+                <tr>
+                    <td colspan="2"><h1 align="center">R.U.C: {{ruc}}</h1></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><h1 class="Descripcion1" align="center">FACTURA</h1></td>
+                </tr>
+                <tr>
+                    <td width="28%">
+                        &nbsp;&nbsp;<span class="Descripcion1">No:</span>
+                    </td>
+                    <td>
+                        <span id="estab">{{estab}}</span>-<span id="ptoEmi">{{ptoEmi}}</span>- <span id="secuencial">{{secuencial}}</span> &emsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Numero de <br>&nbsp;&nbsp;Autorizacion:</span>
+                    </td>
+                    <td>
+                        <span id="autorizacionoffline">{{claveAcceso}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Fecha  de <br>&nbsp;&nbsp;Autorizacion:</span>
+                    </td>
+                    <td>
+                        <span id="fechaEmision">{{fechaEmision}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Ambiente:</span>
+                    </td>
+                    <td>
+                        <span id="ambiente">{{ambiente}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Emision:</span>
+                    </td>
+                    <td>
+                        <span id="emision">{{tipoEmision}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <center>
+
+                            <span class="Descripcion1">Clave de Acceso</span>
+                            <span id="claveAcceso" style="font-family:'Code39AzaleaRegular1';  font-size:73px;"><br>{{claveAcceso}}</span>
+                        </center>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" align="center">
+                        <span id="claveAccesop">{{claveAcceso}}</span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+
+    <tr>
+        <td class="BordesTablas">
+            <table border="0" height="100%" width="100%">
+
+                <tr>
+                    <td colspan="2">
+                        <h2 align="center" class="Descripcion1" id="razonSocial">{{razonSocial}} </h2>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td width="40%">
+                        &nbsp;&nbsp;<span class="Descripcion1">Direccion Matriz:</span>
+
+                    </td>
+                    <td>
+                        <span id="dirMatriz">{{dirMatriz}}</span><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Direccion Sucursal: </span>
+                    </td>
+                    <td>
+                        <span id="dirEstablecimiento">{{dirEstablecimiento}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Contribuyente Esp. No:</span>
+                    </td>
+                    <td>
+                        <span id="obligadoContabilidad">{{contribuyenteEspecial}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Obligado a llevar<br>&nbsp;&nbsp;contabilidad:</span>
+                    </td>
+                    <td>
+                        <span id="obligadoContabilidad">{{obligadoContabilidad}}</span>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2" align="center">
+                        <br>&nbsp;&nbsp;<span class="Descripcion1">{{cadenaAgenteRetencion}}</span>
+                        <br>&nbsp;&nbsp;<span class="Descripcion1">{{contribuyenteRimpe}}</span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td class="BordesTablas" colspan="2">
+
+
+            <table border="0" width="1160" cellspacing="1">
+                <tr>
+                    <td width="280">
+                        &nbsp;&nbsp;<span class="Descripcion1">Razon Social/Nombres y Apellidos:</span>
+                    </td>
+
+                    <td>
+                        <span id="razonSocialProveedor">{{razonSocialComprador}}</span>
+                    </td>
+                    <td>
+                        &nbsp;&nbsp; <span class="Descripcion1">Identificacion:</span>
+                    </td>
+
+                    <td>
+                        <span id="razonSocialProveedor">{{identificacionComprador}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Fecha Emision:</span>
+                    </td>
+
+                    <td>
+                        <span id="razonSocialProveedor">{{fechaEmision}}</span>
+                    </td>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Guia de Remision:</span>
+                    </td>
+
+                    <td>
+                        <span id="razonSocialProveedor">{{guiaRemision}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Direccion:</span>
+                    </td>
+
+                    <td>
+                        <span id="razonSocialProveedor">{{direccionComprador}}</span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+   <!--  <tr>
+        <td class="BordesTablas" colspan="2" id="td_exportacion">
+        <table id="tbl_exportacion"></table>
+        </td>
+    </tr> -->
+</table>
+
+
+<table align='left' border='1' width='1159' cellspacing='0' class="BordesTablasDetalle">
+    <thead >
+        <tr>
+            <th>Cód. Item</th>
+            <th>Cód. Aux</th>
+            <th>Cantidad</th>
+            <th>Descripcion</th>
+            <th>Det. Adicional</th>
+            <th>Precio Unitario</th>
+            <th>Descuento</th>
+            <th width="115">Total Item</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each detalles}}
+        <tr>
+            <td align="center">{{this.item}}</td>
+            <td align="center">{{this.codigoaux}}</td>
+            <td align="center">{{this.quantity}}</td>
+            <td align="left">{{this.description}}</td>
+            <td align="left">{{this.detinfoadicional}}</td>
+            <td align="right">{{this.price}}</td>
+            <td align="right">{{this.desc}}</td>
+            <td align="right">{{this.totalitem}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<!-- Reembolsos -->
+<table align='left' border='1' width='1159' cellspacing='0' class="BordesTablasDetalle">
+    <thead >
+        <tr>
+            <th colspan="9" align="center">Detalle de Reembolsos </th>
+        </tr>
+        <tr>
+            <th>Documento</th>
+            <th>Identificación</th>
+            <th>Emisión</th>
+            <th>Sub. Iva 15</th>
+            <th>Sub. Iva 5</th>
+            <th>Sub. 0</th>
+            <th>Iva 15</th>
+            <th>Iva 5</th>
+            <th width="115">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each reembolsos}}
+        <tr>
+            <td align="center">{{this.documentreem}}</td>
+            <td align="center">{{this.identificationreem}}</td>
+            <td align="center">{{this.issuedatereem}}</td>
+            <td align="left">{{this.subiva15reem}}</td>
+            <td align="left">{{this.subiva5reem}}</td>
+            <td align="right">{{this.sub0reem}}</td>
+            <td align="right">{{this.iva15reem}}</td>
+            <td align="right">{{this.iva5reem}}</td>
+            <td align="right">{{this.totalreem}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<!-- <table>
+    <tr>
+        <td>
+            <br>
+            
+            <br>
+        </td>
+    </tr>
+</table> -->
+
+
+
+<table id="ColSub" width="1160px" border="0">
+    <tr>
+        <td style="width: 780px">
+            <!-- <table id="tableformapago"></table> -->
+            <table align='left' border='0' width='750px' cellspacing='12' class="BordesTablas">
+                <thead>
+                    <tr>
+                        <th>Forma de Pago</th>
+                        <th>Valor</th>
+                        <th>Plazo</th>
+                        <th>Tiempo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td align="center">{{formaPago}}</td>
+                        <td align="center">{{total}}</td>
+                        <td align="center">{{plazo}}</td>
+                        <td align="center">{{unidadTiempo}}</td>
+                        
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </td>
+
+        <td rowspan="2" valign="top">
+            <table border="1" id="tblSubtotales" class="BordesTablas" align="right" cellspacing="0" cellpadding="1" width="390">
+                <!-- <tr>
+                    <td>
+                        <span class="Descripcion1">SUBTOTAL 12%</span>
+                    </td>
+                    <td align="right" style="width:115px;">
+                        <span id="SUBTOTAL12P">{{baseImponible12}}</span>
+                    </td>
+                </tr> -->
+                <tr>
+                    <td>
+                        <span class="Descripcion1">SUBTOTAL 15%</span>
+                    </td>
+                    <td align="right" style="width:115px;">
+                        <span id="SUBTOTAL12P">{{baseImponible15}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="Descripcion1">SUBTOTAL 5%</span>
+                    </td>
+                    <td align="right" style="width:115px;">
+                        <span id="SUBTOTAL12P">{{baseImponible5}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="Descripcion1">SUBTOTAL 0%</span>
+                    </td>
+                    <td align="right">
+                        <span id="SUBTOTAL0P">{{baseImponible0}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="Descripcion1">SUBTOTAL NO OBJETO DE IVA </span>
+                    </td>
+                    <td align="right">
+                        <span id="SUBTOTALNOOBJETODEIVA">{{noobjetoiva}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="Descripcion1">SUBTOTAL EXENTO DE IVA</span>
+                    </td>
+                    <td align="right">
+                        <span id="SUBTOTALEXENTODEIVA">{{excentoiva}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="Descripcion1">SUBTOTAL SIN IMPUESTOS</span>
+                    </td>
+                    <td align="right">
+                        <span id="SUBTOTALSINIMPUESTOS">{{totalSinImpuestos}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="Descripcion1">TOTAL DESCUENTO</span>
+                    </td>
+                    <td align="right">
+                        <span id="TOTALDESCUENTO">{{totalDescuento}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="Descripcion1">ICE</span>
+                    </td>
+                    <td align="right">
+                        <span id="ICE">{{ice}}</span>
+                    </td>
+                </tr>
+               <!--  <tr>
+                    <td>
+                        <span class="Descripcion1">IVA 12%</span>
+                    </td>
+                    <td align="right">
+                        <span id="IVA12P">{{valor}}</span>
+                    </td>
+                </tr> -->
+                <tr>
+                    <td>
+                        <span class="Descripcion1">IVA 15%</span>
+                    </td>
+                    <td align="right">
+                        <span id="IVA12P">{{valorIva15}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="Descripcion1">IVA 5%</span>
+                    </td>
+                    <td align="right">
+                        <span id="IVA12P">{{valorIva5}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="Descripcion1">IRBPNR</span>
+                    </td>
+                    <td align="right">
+                        <span id="IRBPNR">{{irbpnr}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="Descripcion1">PROPINA</span>
+                    </td>
+                    <td align="right">
+                        <span id="PROPINA">{{propina}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="Descripcion1">VALOR TOTAL</span>
+                    </td>
+                    <td align="right">
+                        <span id="VALORTOTAL">{{importeTotal}}</span>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+
+
+    </tr>
+
+    <tr>
+        <td style="width: 750px;">
+            <table align='left' border='0' cellspacing='3' class="BordesTablasAdi">    
+                <tr>
+                    <th colspan="2">Informacion Adicional</th>
+                </tr>
+                <tbody>
+                    {{#each datosinfoadicional}}
+                    <tr>
+                        <td class="Descripcion1Adi"> {{this.campo}}</td>
+                        <td class="DatosAdi">{{this.valorcampo}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table> 
+            <!-- <table align='left' border='0' width='750px' cellspacing='3' class="BordesTablas">	
+                <tr>
+                    <th colspan="2">Informacion Adicional</th>
+                </tr>
+                <tbody>
+                    {{#each datosinfoadicional}}
+                    <tr>
+                        <td width="195" height="27" class="Descripcion1"> {{this.campo}}</td>
+                        <td  style="width: 500px; word-wrap: break-word; white-space: pre-wrap;">{{this.valorcampo}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table> -->
+        </td>
+
+    </tr>
+    
+</table>
+
+       

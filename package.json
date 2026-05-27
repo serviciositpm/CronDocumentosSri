@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "ts-node src/app.ts",
+    "clean": "rm -rf dist"
   },
   "keywords": [],
   "author": "",
@@ -13,17 +16,26 @@
     "bwip-js": "^4.10.1",
     "fast-xml-parser": "^5.8.0",
     "handlebars": "^4.7.9",
+    "mongoose": "^9.6.2",
     "mssql": "^12.5.4",
     "node-cron": "^4.2.1",
     "pdf-lib": "^1.17.1",
-    "puppeteer": "^25.0.4",
-    "soap": "^1.9.2"
+    "puppeteer": "^25.1.0",
+    "soap": "^1.9.3",
+    "winston": "^3.19.0",
+    "winston-mongodb": "^7.0.1",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
+    "@types/bwip-js": "^3.2.3",
+    "@types/express": "^5.0.6",
+    "@types/handlebars": "^4.0.40",
     "@types/mssql": "^12.3.0",
-    "@types/node": "^25.9.0",
+    "@types/node": "^25.9.1",
     "@types/node-cron": "^3.0.11",
+    "@types/puppeteer": "^5.4.7",
     "@types/soap": "^0.18.0",
+    "@types/xml2js": "^0.4.14",
     "dotenv": "^17.4.2",
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
