@@ -1,4 +1,5 @@
 export class CredencialSRI {
+  length: number | undefined;
   constructor(
     public readonly ruc: string,
     public readonly password: string,

@@ -14,7 +14,9 @@ export class PuppeteerManager {
           '--disable-setuid-sandbox',
           '--disable-dev-shm-usage',
           '--disable-gpu',
-          '--single-process'
+          '--single-process',
+          '--disable-accelerated-2d-canvas',
+          //`--user-data-dir=${path.join(process.cwd(), 'chrome_cache')}`
         ]
       });
     }

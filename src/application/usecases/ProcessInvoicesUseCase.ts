@@ -17,13 +17,12 @@ export class ProcessInvoicesUseCase {
   ) {}
 
   async execute(): Promise<void> {
-    const credenciales = await this.credRepo.obtenerCredenciales();
-    if (!credenciales || credenciales.length === 0) {
+    const credencial = await this.credRepo.obtenerCredenciales();
+    if (!credencial) {
       await this.logRepo.error('No se obtuvieron credenciales SRI');
       return;
     }
 
-    const credencial = credenciales[0];
     // Inicializar el cliente SOAP con las credenciales del SRI
     await this.sriClient.initialize(credencial.ruc, credencial.password);
 
