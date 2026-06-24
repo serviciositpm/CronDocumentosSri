@@ -5,7 +5,7 @@ export class PuppeteerManager {
   private static browser: Browser | null = null;
 
   static async getBrowser(): Promise<Browser> {
-    if (!PuppeteerManager.browser) {
+    if (!PuppeteerManager.browser || !PuppeteerManager.browser.connected) {
       PuppeteerManager.browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
@@ -14,10 +14,17 @@ export class PuppeteerManager {
           '--disable-setuid-sandbox',
           '--disable-dev-shm-usage',
           '--disable-gpu',
-          '--single-process',
+          // '--single-process' fue removido: es inestable bajo carga y
+          // suele ser la causa de errores "Target closed" intermitentes.
           '--disable-accelerated-2d-canvas',
-          //`--user-data-dir=${path.join(process.cwd(), 'chrome_cache')}`
         ]
+      });
+
+      // Si el navegador se cae solo (crash), limpiamos la referencia
+      // para que el próximo getBrowser() lance uno nuevo en vez de
+      // quedarse intentando usar uno muerto.
+      PuppeteerManager.browser.on('disconnected', () => {
+        PuppeteerManager.browser = null;
       });
     }
     return PuppeteerManager.browser;

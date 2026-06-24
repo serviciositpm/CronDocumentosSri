@@ -26,10 +26,23 @@ async function main() {
       credRepo, facturaRepo, logRepo, sriClient, parser, pdfGen
     );
 
-    // Ejecutar cada minuto
+    let isRunning = false;
+
+    // Ejecutar cada minuto, sin solaparse si el ciclo anterior sigue activo
     cron.schedule('* * * * *', async () => {
-      logger.info('Iniciando ciclo de procesamiento');
-      await processUseCase.execute();
+      if (isRunning) {
+        logger.warn('Ciclo anterior aún en ejecución, se omite este tick');
+        return;
+      }
+      isRunning = true;
+      try {
+        logger.info('Iniciando ciclo de procesamiento');
+        await processUseCase.execute();
+      } catch (error) {
+        logger.error('Error en el ciclo de procesamiento', { error });
+      } finally {
+        isRunning = false;
+      }
     });
 
     logger.info('Servicio iniciado. Esperando tareas...');
