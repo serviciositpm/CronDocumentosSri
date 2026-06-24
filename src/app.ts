@@ -5,6 +5,7 @@ import { FacturaRepositorySQL } from './infrastructure/database/sql/FacturaRepos
 import { LogRepositoryMongo } from './infrastructure/database/mongodb/LogRepositoryMongo';
 import { SriSoapClient } from './infrastructure/webservices/SriSoapClient';
 import { XmlToInvoiceParser } from './infrastructure/parsing/XmlToInvoiceParser';
+import { XmlToNotaDebitoParser } from './infrastructure/parsing/XmlToNotaDebitoParser';
 import { PdfGeneratorService } from './infrastructure/pdf/PdfGeneratorService';
 import MongoConnection from './infrastructure/database/mongodb/MongoConnection';
 import { logger } from './config/logger';
@@ -20,15 +21,15 @@ async function main() {
     const logRepo = new LogRepositoryMongo();
     const sriClient = new SriSoapClient();
     const parser = new XmlToInvoiceParser();
+    const notaDebitoParser = new XmlToNotaDebitoParser();
     const pdfGen = new PdfGeneratorService();
 
     const processUseCase = new ProcessInvoicesUseCase(
-      credRepo, facturaRepo, logRepo, sriClient, parser, pdfGen
+      credRepo, facturaRepo, logRepo, sriClient, parser, notaDebitoParser, pdfGen
     );
 
     let isRunning = false;
 
-    // Ejecutar cada minuto, sin solaparse si el ciclo anterior sigue activo
     cron.schedule('* * * * *', async () => {
       if (isRunning) {
         logger.warn('Ciclo anterior aún en ejecución, se omite este tick');
