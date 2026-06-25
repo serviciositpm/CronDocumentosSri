@@ -2,6 +2,7 @@ import { IPdfGenerator } from '../../domain/services/IPdfGenerator';
 import { Factura } from '../../domain/entities/Factura';
 import { NotaDebito } from '../../domain/entities/NotaDebito';
 import { NotaCredito } from '../../domain/entities/NotaCredito';
+import { GuiaRemision } from '../../domain/entities/GuiaRemision';
 import Handlebars from 'handlebars';
 import fs from 'fs/promises';
 import path from 'path';
@@ -25,6 +26,10 @@ export class PdfGeneratorService implements IPdfGenerator {
 
   async generarNotaDebito(notaDebito: NotaDebito, rutaDestino: string): Promise<string> {
     return this.renderizarYGenerar('Template_Nd.html', notaDebito, notaDebito.nombrearchivo, rutaDestino);
+  }
+
+  async generarGuiaRemision(guiaRemision: GuiaRemision, rutaDestino: string): Promise<string> {
+    return this.renderizarYGenerar('Template_Guia.html', guiaRemision, guiaRemision.nombrearchivo, rutaDestino);
   }
 
   async generarNotaCredito(notaCredito: NotaCredito, rutaDestino: string): Promise<string> {

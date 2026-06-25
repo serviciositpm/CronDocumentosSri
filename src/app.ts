@@ -7,6 +7,7 @@ import { SriSoapClient } from './infrastructure/webservices/SriSoapClient';
 import { XmlToInvoiceParser } from './infrastructure/parsing/XmlToInvoiceParser';
 import { XmlToNotaDebitoParser } from './infrastructure/parsing/XmlToNotaDebitoParser';
 import { XmlToNotaCreditoParser } from './infrastructure/parsing/XmlToNotaCreditoParser';
+import { XmlToGuiaRemisionParser } from './infrastructure/parsing/XmlToGuiaRemisionParser';
 import { PdfGeneratorService } from './infrastructure/pdf/PdfGeneratorService';
 import MongoConnection from './infrastructure/database/mongodb/MongoConnection';
 import { logger } from './config/logger';
@@ -24,10 +25,11 @@ async function main() {
     const parser = new XmlToInvoiceParser();
     const notaDebitoParser = new XmlToNotaDebitoParser();
     const notaCreditoParser = new XmlToNotaCreditoParser();
+    const guiaRemisionParser = new XmlToGuiaRemisionParser();
     const pdfGen = new PdfGeneratorService();
 
     const processUseCase = new ProcessInvoicesUseCase(
-      credRepo, facturaRepo, logRepo, sriClient, parser, notaDebitoParser, notaCreditoParser, pdfGen
+      credRepo, facturaRepo, logRepo, sriClient, parser, notaDebitoParser, notaCreditoParser, guiaRemisionParser, pdfGen
     );
 
     let isRunning = false;
