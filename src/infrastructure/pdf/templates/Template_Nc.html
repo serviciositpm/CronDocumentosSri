@@ -1,4 +1,3 @@
-
 <style>
     html, body, h1, h2, h3, h4, h5, h6 {
         font-family: "Bookman L", bold, sans-serif;
@@ -19,7 +18,34 @@
         border-collapse: separate;
     }
 
+    /* Faltaban en tu versión: las necesita la tabla de Informacion Adicional
+       (igual que en Template_Factura.html y Template_Nd.html) */
+    .BordesTablasAdi {
+        border: 2px solid;
+        border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-collapse: collapse;
+        width: 750px;
+    }
 
+    .BordesTablasAdi th, .BordesTablasAdi td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+
+    .BordesTablasAdi td {
+        word-wrap: break-word;
+        white-space: pre-wrap;
+    }
+
+    .Descripcion1Adi {
+        width: 195px;
+        font-weight: bold;
+    }
+
+    .DatosAdi {
+        width: 500px;
+    }
 </style>
 
 
@@ -31,18 +57,17 @@
         <td rowspan="2" class="BordesTablas">
             <table border="0" height="100%" width="100%">
                 <tr>
-                    <td colspan="2"><h1 align="center">XR.U.C:</h1></td>
+                    <td colspan="2"><h1 align="center">R.U.C: {{ruc}}</h1></td>
                 </tr>
                 <tr>
                     <td colspan="2"><h1 class="Descripcion1" align="center">NOTA DE CREDITO</h1></td>
-
                 </tr>
                 <tr>
                     <td width="28%">
                         &nbsp;&nbsp;<span class="Descripcion1">No:</span>
                     </td>
                     <td>
-                        <span id="estab">Xestab</span>-<span id="ptoEmi">XptoEmi</span>- <span id="secuencial">Xsecuencial</span> &emsp;
+                        <span id="estab">{{estab}}</span>-<span id="ptoEmi">{{ptoEmi}}</span>- <span id="secuencial">{{secuencial}}</span> &emsp;
                     </td>
                 </tr>
                 <tr>
@@ -50,7 +75,7 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Numero de <br>&nbsp;&nbsp;Autorizacion:</span>
                     </td>
                     <td>
-                        <span id="autorizacionoffline">Xautorizacionoffline</span>
+                        <span id="autorizacionoffline">{{claveAcceso}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -58,7 +83,7 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Fecha  de <br>&nbsp;&nbsp;Autorizacion:</span>
                     </td>
                     <td>
-                        <span id="fechaEmision">XYZfechaEmision</span>
+                        <span id="fechaEmision">{{fechaEmision}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -66,7 +91,7 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Ambiente:</span>
                     </td>
                     <td>
-                        <span id="ambiente">Xambiente</span>
+                        <span id="ambiente">{{ambiente}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -74,23 +99,22 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Emision:</span>
                     </td>
                     <td>
-                        <span id="emision">Xemision</span>
+                        <span id="emision">{{tipoEmision}}</span>
                     </td>
                 </tr>
 
                 <tr>
                     <td colspan="2">
                         <center>
-                                    <!--   <span id="claveAcceso">XclaveAcceso</span> -->
-                                    <span class="Descripcion1">Clave de Acceso</span>
-                                    <span id="claveAcceso" style="font-family:'Code39AzaleaRegular1';  font-size:73px;"><br>XclaveAcceso</span>
+                            <span class="Descripcion1">Clave de Acceso</span>
+                            <span id="claveAcceso" style="font-family:'Code39AzaleaRegular1';  font-size:73px;"><br>{{claveAcceso}}</span>
                         </center>
                     </td>
                 </tr>
 
                 <tr>
                     <td colspan="2" align="center">
-                        <span id="claveAccesop">XclaveAcceso</span>
+                        <span id="claveAccesop">{{claveAcceso}}</span>
                     </td>
                 </tr>
             </table>
@@ -108,17 +132,16 @@
 
                 <tr>
                     <td colspan="2">
-                        <h2 align="center" class="Descripcion1" id="razonSocial">XrazonSocial </h2>
+                        <h2 align="center" class="Descripcion1" id="razonSocial">{{razonSocial}} </h2>
                     </td>
                 </tr>
 
                 <tr>
                     <td width="40%">
                         &nbsp;&nbsp;<span class="Descripcion1">Direccion <br>&nbsp;&nbsp;Matriz:</span>
-
                     </td>
                     <td>
-                        <span id="dirMatriz">XdirMatriz</span><br>
+                        <span id="dirMatriz">{{dirMatriz}}</span><br>
                     </td>
                 </tr>
                 <tr>
@@ -126,7 +149,7 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Direccion Sucursal: </span>
                     </td>
                     <td>
-                        <span id="dirEstablecimiento">XYZdirEstablecimiento</span>
+                        <span id="dirEstablecimiento">{{dirEstablecimiento}}</span>
                     </td>
                 </tr>
 
@@ -135,7 +158,7 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Contribuyente especial Nro:</span>
                     </td>
                     <td>
-                        <span id="obligadoContabilidad">XYZcontribuyenteEspecial</span>
+                        <span id="contribuyenteEspecial">{{contribuyenteEspecial}}</span>
                     </td>
                 </tr>
 
@@ -144,19 +167,18 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Obligado a llevar contabilidad:</span>
                     </td>
                     <td>
-                        <span id="obligadoContabilidad">XYZobligadoContabilidad</span>
+                        <span id="obligadoContabilidad">{{obligadoContabilidad}}</span>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
-                        &nbsp;&nbsp;<span class="Descripcion1">EXPORTADOR HABITUAL DE BIENES </span>
+                        &nbsp;&nbsp;<span class="Descripcion1">{{cadenaAgenteRetencion}}</span>
+                        <br>&nbsp;&nbsp;<span class="Descripcion1">{{contribuyenteRimpe}}</span>
                     </td>
                 </tr>
 
             </table>
         </td>
-
-
     </tr>
 </table>
 
@@ -166,9 +188,8 @@
         <td width="190">
             &nbsp;&nbsp;<span class="Descripcion1">Razon Social / Nombres y Apellidos:</span>
         </td>
-
         <td>
-            <span id="razonSocialComprador">XYZrazonSocialComprador</span>
+            <span id="razonSocialComprador">{{razonSocialComprador}}</span>
         </td>
     </tr>
 
@@ -176,9 +197,8 @@
         <td>
             &nbsp;&nbsp; <span class="Descripcion1">Identificacion:</span>
         </td>
-
         <td>
-            <span id="identificacionComprador">XYZidentificacionComprador</span>
+            <span id="identificacionComprador">{{identificacionComprador}}</span>
         </td>
     </tr>
 
@@ -186,9 +206,8 @@
         <td>
             &nbsp;&nbsp;<span class="Descripcion1">Fecha Emision:</span>
         </td>
-
         <td>
-            <span id="razonSocialProveedor">XYZfechaEmision</span>
+            <span id="fechaEmisionComprobante">{{fechaEmision}}</span>
         </td>
     </tr>
 
@@ -198,7 +217,6 @@
             <div style="border-top:dashed; width:100%"></div>
             <br>
         </td>
-
     </tr>
 
     <tr>
@@ -206,10 +224,10 @@
             &nbsp;&nbsp;<span class="Descripcion1">Comprobante que se modifica</span>
         </td>
         <td>
-            <span id="codDocModificado">XYZcodDocModificado</span>
+            <span id="codDocModificado">{{codDocModificado}}</span>
         </td>
         <td>
-            <span id="numDocModificado">XYZnumDocModificado</span>
+            <span id="numDocModificado">{{numDocModificado}}</span>
         </td>
     </tr>
 
@@ -218,48 +236,74 @@
             &nbsp;&nbsp;<span class="Descripcion1">Fecha Emision (Comprobante a modificar):</span>
         </td>
         <td>
-            <span id="fechaEmisionDocSustento">VXYZAfechaEmisionDocSustento</span>
+            <span id="fechaEmisionDocSustento">{{fechaEmisionDocSustento}}</span>
         </td>
     </tr>
     <tr>
         <td>
             &nbsp;&nbsp;<span class="Descripcion1">Razon de Modificacion:</span>
         </td>
-        <td>
-            <span id="RazondeModificacion">VXYZARazondeModificacion</span>
+        <td colspan="2">
+            <span id="razondeModificacion">{{motivo}}</span>
         </td>
     </tr>
-
 
 </table>
 
 
-<table>
-    <tr>
-        <td>
-            <br>
-
-            <table id="tabledetalle"></table>
-            <br>
-        </td>
-    </tr>
+<table align='left' border='1' width='1159' cellspacing='0' class="BordesTablasDetalle">
+    <thead>
+        <tr>
+            <th>Cód. Item</th>
+            <th>Cód. Aux</th>
+            <th>Cantidad</th>
+            <th>Descripcion</th>
+            <th>Precio Unitario</th>
+            <th>Descuento</th>
+            <th width="115">Total Item</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each detalles}}
+        <tr>
+            <td align="center">{{this.item}}</td>
+            <td align="center">{{this.codigoaux}}</td>
+            <td align="center">{{this.quantity}}</td>
+            <td align="left">{{this.description}}</td>
+            <td align="right">{{this.price}}</td>
+            <td align="right">{{this.desc}}</td>
+            <td align="right">{{this.totalitem}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
 </table>
-
 
 
 <table id="ColSub" width="1160">
     <tr>
-        <td>
-            <table id="tableinfoadicional"></table>
+        <td style="width: 750px;">
+            <table align='left' border='0' cellspacing='3' class="BordesTablasAdi">
+                <tr>
+                    <th colspan="2">Informacion Adicional</th>
+                </tr>
+                <tbody>
+                    {{#each datosinfoadicional}}
+                    <tr>
+                        <td class="Descripcion1Adi">{{this.campo}}</td>
+                        <td class="DatosAdi">{{this.valorcampo}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
         </td>
-        <th rowspan="2">
+        <th rowspan="1" valign="top">
             <table border="1" id="tblSubtotales" class="BordesTablas" align="right" cellspacing="0" cellpadding="1" width="390">
                 <tr>
                     <td style="width:250px;">
                         <span class="Descripcion1">SUBTOTAL 12%</span>
                     </td>
                     <td align="right" style="width:105px;">
-                        <span id="SUBTOTAL12P">XSUBTOTAL12P</span>
+                        <span id="SUBTOTAL12P">{{baseImponible12}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -267,7 +311,7 @@
                         <span class="Descripcion1">SUBTOTAL 15%</span>
                     </td>
                     <td align="right" style="width:105px;">
-                        <span id="SUBTOTAL15P">XSUBTOTAL15P</span>
+                        <span id="SUBTOTAL15P">{{baseImponible15}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -275,7 +319,7 @@
                         <span class="Descripcion1">SUBTOTAL 5%</span>
                     </td>
                     <td align="right" style="width:105px;">
-                        <span id="SUBTOTAL5P">XSUBTOTAL5P</span>
+                        <span id="SUBTOTAL5P">{{baseImponible5}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -283,7 +327,7 @@
                         <span class="Descripcion1">SUBTOTAL IVA 0%</span>
                     </td>
                     <td align="right">
-                        <span id="SUBTOTAL0P">XSUBTOTAL0P</span>
+                        <span id="SUBTOTAL0P">{{baseImponible0}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -291,7 +335,7 @@
                         <span class="Descripcion1">SUBTOTAL NO OBJETO DE IVA </span>
                     </td>
                     <td align="right">
-                        <span id="SUBTOTALNOOBJETODEIVA">XSUBTOTALNOOBJETODEIVA</span>
+                        <span id="SUBTOTALNOOBJETODEIVA">{{noobjetoiva}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -299,7 +343,7 @@
                         <span class="Descripcion1">SUBTOTAL EXENTO DE IVA</span>
                     </td>
                     <td align="right">
-                        <span id="SUBTOTALEXENTODEIVA">XSUBTOTALEXENTODEIVA</span>
+                        <span id="SUBTOTALEXENTODEIVA">{{excentoiva}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -307,7 +351,7 @@
                         <span class="Descripcion1">SUBTOTAL SIN IMPUESTOS</span>
                     </td>
                     <td align="right">
-                        <span id="SUBTOTALSINIMPUESTOS">XYZSUBTOTALSINIMPUESTOS</span>
+                        <span id="SUBTOTALSINIMPUESTOS">{{totalSinImpuestos}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -315,7 +359,7 @@
                         <span class="Descripcion1">ICE</span>
                     </td>
                     <td align="right">
-                        <span id="ICE">XICE</span>
+                        <span id="ICE">{{ice}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -323,7 +367,7 @@
                         <span class="Descripcion1">IVA 12%</span>
                     </td>
                     <td align="right">
-                        <span id="IVA12P">XIVA12P</span>
+                        <span id="IVA12P">{{valorIva12}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -331,7 +375,7 @@
                         <span class="Descripcion1">IVA 15%</span>
                     </td>
                     <td align="right">
-                        <span id="IVA15P">XIVA15P</span>
+                        <span id="IVA15P">{{valorIva15}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -339,7 +383,7 @@
                         <span class="Descripcion1">IVA 5%</span>
                     </td>
                     <td align="right">
-                        <span id="IVA5P">XIVA5P</span>
+                        <span id="IVA5P">{{valorIva5}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -347,7 +391,7 @@
                         <span class="Descripcion1">IRBPNR</span>
                     </td>
                     <td align="right">
-                        <span id="IRBPNR">XIRBPNR</span>
+                        <span id="IRBPNR">{{irbpnr}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -355,20 +399,11 @@
                         <span class="Descripcion1">VALOR TOTAL</span>
                     </td>
                     <td align="right">
-                        <span id="VALORTOTAL">XVALORTOTAL</span>
+                        <span id="VALORTOTAL">{{valorModificacion}}</span>
                     </td>
                 </tr>
 
             </table>
         </th>
-
-
-    </tr>
-
-    <tr>
-        <td>
-            <table id="tableformapago"></table>
-        </td>
-
     </tr>
 </table>

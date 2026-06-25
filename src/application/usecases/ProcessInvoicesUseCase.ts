@@ -4,6 +4,7 @@ import { IFacturaRepository } from '../../domain/repositories/IFacturaRepository
 import { ISriClient } from '../../domain/services/ISriClient';
 import { IInvoiceParser } from '../../domain/services/IInvoiceParser';
 import { INotaDebitoParser } from '../../domain/services/INotaDebitoParser';
+import { INotaCreditoParser } from '../../domain/services/INotaCreditoParser';
 import { IPdfGenerator } from '../../domain/services/IPdfGenerator';
 import { GetClavesAccesoUseCase } from './GetClavesAccesoUseCase';
 import { obtenerCodDocDesdeClaveAcceso, TIPO_COMPROBANTE } from '../../shared/utils/claveacceso.utils';
@@ -16,6 +17,7 @@ export class ProcessInvoicesUseCase {
     private sriClient: ISriClient,
     private parser: IInvoiceParser,
     private notaDebitoParser: INotaDebitoParser,
+    private notaCreditoParser: INotaCreditoParser,
     private pdfGenerator: IPdfGenerator
   ) {}
 
@@ -47,6 +49,11 @@ export class ProcessInvoicesUseCase {
           case TIPO_COMPROBANTE.NOTA_DEBITO: {
             const notaDebito = await this.notaDebitoParser.parse(xmlAutorizado, clave.claveAcceso);
             rutaPdf = await this.pdfGenerator.generarNotaDebito(notaDebito, credencial.urlDestino);
+            break;
+          }
+          case TIPO_COMPROBANTE.NOTA_CREDITO: {
+            const notaCredito = await this.notaCreditoParser.parse(xmlAutorizado, clave.claveAcceso);
+            rutaPdf = await this.pdfGenerator.generarNotaCredito(notaCredito, credencial.urlDestino);
             break;
           }
           case TIPO_COMPROBANTE.FACTURA:
