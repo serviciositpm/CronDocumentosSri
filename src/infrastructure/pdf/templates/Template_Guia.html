@@ -1,4 +1,3 @@
-
 <style>
     html, body, h1, h2, h3, h4, h5, h6 {
         font-family: "Bookman L", bold, sans-serif;
@@ -19,6 +18,33 @@
         border: 2px solid;
         border-collapse: separate;
     }
+
+    .BordesTablasAdi {
+        border: 2px solid;
+        border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-collapse: collapse;
+        width: 750px;
+    }
+
+    .BordesTablasAdi th, .BordesTablasAdi td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+
+    .BordesTablasAdi td {
+        word-wrap: break-word;
+        white-space: pre-wrap;
+    }
+
+    .Descripcion1Adi {
+        width: 195px;
+        font-weight: bold;
+    }
+
+    .DatosAdi {
+        width: 500px;
+    }
 </style>
 
 <table border="0" width="1160" height="180" cellspacing="2">
@@ -29,18 +55,17 @@
         <td rowspan="2" width="580" class="BordesTablas">
             <table border="0" width="100%">
                 <tr>
-                    <td colspan="2"><h1 align="center">XR.U.C:</h1></td>
+                    <td colspan="2"><h1 align="center">R.U.C: {{ruc}}</h1></td>
                 </tr>
                 <tr>
                     <td colspan="2"><h1 class="Descripcion1" align="center">GUIA DE REMISION</h1></td>
-
                 </tr>
                 <tr>
                     <td width="28%">
                         &nbsp;&nbsp;<span class="Descripcion1">No</span>
                     </td>
                     <td>
-                        <span id="estab">Xestab</span>-<span id="ptoEmi">XptoEmi</span>-<span id="secuencial">Xsecuencial</span> &emsp;
+                        <span id="estab">{{estab}}</span>-<span id="ptoEmi">{{ptoEmi}}</span>-<span id="secuencial">{{secuencial}}</span> &emsp;
                     </td>
                 </tr>
                 <tr>
@@ -48,26 +73,15 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Numero de <br>&nbsp;&nbsp;Autorizacion</span>
                     </td>
                     <td>
-                        <span id="autorizacionoffline">Xautorizacionoffline</span>
-                    </td>
-
-                </tr>
-                <!--
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Fecha  de <br>&nbsp;&nbsp;Autorizacion:</span>
-                    </td>
-                    <td>
-                        <span id="fechaEmision">XYZfechaAutorizacion</span>
+                        <span id="autorizacionoffline">{{claveAcceso}}</span>
                     </td>
                 </tr>
-                   -->
                 <tr>
                     <td>
                         &nbsp;&nbsp;<span class="Descripcion1">Ambiente:</span>
                     </td>
                     <td>
-                        <span id="ambiente">Xambiente</span>
+                        <span id="ambiente">{{ambiente}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -75,21 +89,21 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Emision:</span>
                     </td>
                     <td>
-                        <span id="emision">Xemision</span>
+                        <span id="emision">{{tipoEmision}}</span>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2">
                         <center>
                             <span class="Descripcion1">Clave de Acceso</span>
-                            <span id="claveAcceso" style="font-family:'Code39AzaleaRegular1';  font-size:73px;"><br>XYZclaveAcceso</span>
+                            <span id="claveAcceso" style="font-family:'Code39AzaleaRegular1';  font-size:73px;"><br>{{claveAcceso}}</span>
                         </center>
                     </td>
                 </tr>
 
                 <tr>
                     <td colspan="2" align="center">
-                        <span id="claveAccesop">XYZclaveAcceso</span>
+                        <span id="claveAccesop">{{claveAcceso}}</span>
                     </td>
                 </tr>
             </table>
@@ -100,17 +114,16 @@
             <table border="0" width="100%" height="100%">
                 <tr>
                     <td colspan="2">
-                        <h2 align="center" class="Descripcion1" id="razonSocial">XrazonSocial </h2>
+                        <h2 align="center" class="Descripcion1" id="razonSocial">{{razonSocial}} </h2>
                     </td>
                 </tr>
 
                 <tr>
                     <td width="50%">
                         &nbsp;&nbsp;<span class="Descripcion1">Direccion <br>&nbsp;&nbsp;Matriz:</span>
-
                     </td>
                     <td>
-                        <span id="dirMatriz">XdirMatriz</span>
+                        <span id="dirMatriz">{{dirMatriz}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -118,7 +131,7 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Direccion <br>&nbsp;&nbsp;Sucursal:</span>
                     </td>
                     <td>
-                        <span id="dirEstablecimiento">XYZdirEstablecimiento</span>
+                        <span id="dirEstablecimiento">{{dirEstablecimiento}}</span>
                     </td>
                 </tr>
 
@@ -127,7 +140,7 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Contribuyente especial Nro.:</span>
                     </td>
                     <td>
-                        <span id="obligadoContabilidad">XYZcontribuyenteEspecial</span>
+                        <span id="contribuyenteEspecial">{{contribuyenteEspecial}}</span>
                     </td>
                 </tr>
 
@@ -136,22 +149,20 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Obligado a llevar contabilidad:</span>
                     </td>
                     <td>
-                        <span id="obligadoContabilidad">XYZobligadoContabilidad</span>
+                        <span id="obligadoContabilidad">{{obligadoContabilidad}}</span>
                     </td>
                 </tr>
 
                 <tr>
                     <td colspan="2" align="center">
-                        &nbsp;&nbsp;<span class="Descripcion1">EXPORTADOR HABITUAL DE BIENES </span>
+                        &nbsp;&nbsp;<span class="Descripcion1">{{cadenaAgenteRetencion}}</span>
+                        <br>&nbsp;&nbsp;<span class="Descripcion1">{{contribuyenteRimpe}}</span>
                     </td>
                 </tr>
 
             </table>
         </td>
-
-
     </tr>
-
 
 </table>
 
@@ -164,7 +175,7 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Identificacion(Transportista):</span>
                     </td>
                     <td colspan="3">
-                        <span id="a">XYZrucTransportista</span>
+                        <span id="rucTransportista">{{rucTransportista}}</span>
                     </td>
                 </tr>
 
@@ -173,7 +184,7 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Razon Social / Nombres y Apellidos:   </span>
                     </td>
                     <td>
-                        <span id="b">XYZrazonSocialTransportista</span>
+                        <span id="razonSocialTransportista">{{razonSocialTransportista}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -181,7 +192,7 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Placa:</span>
                     </td>
                     <td>
-                        <span id="c">XYZplaca</span>
+                        <span id="placa">{{placa}}</span>
                     </td>
                 </tr>
 
@@ -190,7 +201,7 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Punto de Partida:</span>
                     </td>
                     <td>
-                        <span id="d">XYZdirPartida</span>
+                        <span id="dirPartida">{{dirPartida}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -198,13 +209,13 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Fecha inicio Transporte:</span>
                     </td>
                     <td>
-                        <span id="e">XYZfechaIniTransporte</span>
+                        <span id="fechaIniTransporte">{{fechaIniTransporte}}</span>
                     </td>
                     <td>
                         &nbsp;&nbsp;<span class="Descripcion1">Fecha fin Transporte:</span>
                     </td>
                     <td>
-                        <span id="h">XYZfechaFinTransporte</span>
+                        <span id="fechaFinTransporte">{{fechaFinTransporte}}</span>
                     </td>
                 </tr>
             </table>
@@ -219,7 +230,7 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Motivo Traslado:</span>
                     </td>
                     <td>
-                        <span id="c">XYZmotivoTraslado</span>
+                        <span id="motivoTraslado">{{motivoTraslado}}</span>
                     </td>
                 </tr>
 
@@ -228,7 +239,7 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Destino(Punto de llegada):</span>
                     </td>
                     <td>
-                        <span id="d">XYZdirDestinatario</span>
+                        <span id="dirDestinatario">{{dirDestinatario}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -236,7 +247,7 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Identificacion (Destinatario):</span>
                     </td>
                     <td>
-                        <span id="e">XYZidentificacionDestinatario</span>
+                        <span id="identificacionDestinatario">{{identificacionDestinatario}}</span>
                     </td>
                 </tr>
 
@@ -245,7 +256,7 @@
                         &nbsp;&nbsp;<span class="Descripcion1">Razon Social/Nombres Apellidos:</span>
                     </td>
                     <td>
-                        <span id="e">XYZrazonSocialDestinatario</span>
+                        <span id="razonSocialDestinatario">{{razonSocialDestinatario}}</span>
                     </td>
                 </tr>
 
@@ -254,17 +265,42 @@
     </tr>
 </table>
 <br>
-<table>
-    <tr>
-        <td>
-            <br>
-            <table id="tabledetalle"></table>
-        </td>
-    </tr>
+
+<table align='left' border='1' width='1159' cellspacing='0' class="BordesTablasDetalle">
+    <thead>
+        <tr>
+            <th>Cód. Item</th>
+            <th>Cód. Aux</th>
+            <th>Descripcion</th>
+            <th width="115">Cantidad</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each detalles}}
+        <tr>
+            <td align="center">{{this.item}}</td>
+            <td align="center">{{this.codigoaux}}</td>
+            <td align="left">{{this.description}}</td>
+            <td align="right">{{this.quantity}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
 </table>
 <br>
 
-<table id="tableinfoadicional"></table>
+<table align='left' border='0' cellspacing='3' class="BordesTablasAdi">
+    <tr>
+        <th colspan="2">Informacion Adicional</th>
+    </tr>
+    <tbody>
+        {{#each datosinfoadicional}}
+        <tr>
+            <td class="Descripcion1Adi">{{this.campo}}</td>
+            <td class="DatosAdi">{{this.valorcampo}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
 
 <br>
 <br>
