@@ -1,8 +1,10 @@
 export interface DetalleRetencion {
   codDocSustento: string;
+  descDocSustento: string;       // "12 - Documento emitido por instituciones financieras"
   numDocSustento: string;
   fechaEmisionDocSustento: string;
   codigoImpuesto: string;
+  descImpuesto: string;          // "6 - ISD"
   codigoRetencion: string;
   baseImponible: number;
   porcentajeRetener: number;

@@ -1,6 +1,8 @@
 import { IRetencionParser } from '../../domain/services/IRetencionParser';
 import { Retencion, DetalleRetencion } from '../../domain/entities/Retencion';
 import xml2js from 'xml2js';
+import { descCodDocSustento, descCodigoImpuesto } from '../../shared/utils/catalogosri.utils';
+
 
 export class XmlToRetencionParser implements IRetencionParser {
   async parse(xmlResponse: string, claveAcceso: string): Promise<Retencion> {
@@ -60,12 +62,15 @@ export class XmlToRetencionParser implements IRetencionParser {
         const fechaEmisionDocSustento = doc.fechaEmisionDocSustento?.[0] || '';
         const retencionesNode = doc.retenciones?.[0]?.retencion || [];
         for (const ret of retencionesNode) {
+          const codImp = ret.codigo[0];
           const valorRetenido = parseFloat(ret.valorRetenido[0]);
           detalles.push({
             codDocSustento,
+            descDocSustento: descCodDocSustento(codDocSustento),
             numDocSustento,
             fechaEmisionDocSustento,
-            codigoImpuesto: ret.codigo[0],
+            codigoImpuesto: codImp,
+            descImpuesto: descCodigoImpuesto(codImp),
             codigoRetencion: ret.codigoRetencion[0],
             baseImponible: parseFloat(ret.baseImponible[0]),
             porcentajeRetener: parseFloat(ret.porcentajeRetener[0]),
@@ -80,12 +85,16 @@ export class XmlToRetencionParser implements IRetencionParser {
       // docSustento son opcionales en este esquema; pueden venir o no.
       const impuestosNode = retNode.impuestos?.[0]?.impuesto || [];
       for (const imp of impuestosNode) {
+        const codDoc = imp.codDocSustento?.[0] || '';
+        const codImp = imp.codigo[0];
         const valorRetenido = parseFloat(imp.valorRetenido[0]);
         detalles.push({
-          codDocSustento: imp.codDocSustento?.[0] || '',
+          codDocSustento: codDoc,
+          descDocSustento: descCodDocSustento(codDoc),
           numDocSustento: imp.numDocSustento?.[0] || '',
           fechaEmisionDocSustento: imp.fechaEmisionDocSustento?.[0] || '',
-          codigoImpuesto: imp.codigo[0],
+          codigoImpuesto: codImp,
+          descImpuesto: descCodigoImpuesto(codImp),
           codigoRetencion: imp.codigoRetencion[0],
           baseImponible: parseFloat(imp.baseImponible[0]),
           porcentajeRetener: parseFloat(imp.porcentajeRetener[0]),
