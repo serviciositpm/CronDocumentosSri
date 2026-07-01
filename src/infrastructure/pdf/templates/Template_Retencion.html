@@ -1,0 +1,272 @@
+<style>
+    html, body, h1, h2, h3, h4, h5, h6 {
+        font-family: "Bookman L", bold, sans-serif;
+    }
+
+    .Descripcion1 {
+        font-weight: bold;
+    }
+
+    .BordesTablas {
+        border: 2px solid;
+        border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-collapse: separate;
+    }
+
+    .BordesTablasDetalle {
+        border: 2px solid;
+        border-collapse: separate;
+    }
+
+    .BordesTablasAdi {
+        border: 2px solid;
+        border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-collapse: collapse;
+        width: 700px;
+    }
+
+    .BordesTablasAdi th, .BordesTablasAdi td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+
+    .BordesTablasAdi td {
+        word-wrap: break-word;
+        white-space: pre-wrap;
+    }
+
+    .Descripcion1Adi {
+        width: 195px;
+        font-weight: bold;
+    }
+
+    .DatosAdi {
+        width: 500px;
+    }
+</style>
+
+
+<table border="0" width="1160" height="180">
+    <tr>
+        <td>
+            <img width="490" height="180" alt="No existe imagen en doc/img/ " src="img/LogoPromariscoNuevaPescanova.jpg" />
+        </td>
+        <td rowspan="2" class="BordesTablas">
+            <table border="0" width="100%">
+                <tr>
+                    <td colspan="2"><h1 align="center">R.U.C: {{ruc}}</h1></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><h1 class="Descripcion1" align="center">COMPROBANTE DE RETENCION</h1></td>
+                </tr>
+                <tr>
+                    <td width="28%">
+                        &nbsp;&nbsp;<span class="Descripcion1">No    </span>
+                    </td>
+                    <td>
+                        <span id="estab">{{estab}}</span>-<span id="ptoEmi">{{ptoEmi}}</span>-<span id="secuencial">{{secuencial}}</span> &emsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Numero de<br>&nbsp;&nbsp;Autorizacion:</span>
+                    </td>
+                    <td>
+                        <span id="autorizacionoffline">{{claveAcceso}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Fecha  de <br>&nbsp;&nbsp;Autorizacion:</span>
+                    </td>
+                    <td>
+                        <span id="fechaAut">{{fechaAut}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Ambiente:</span>
+                    </td>
+                    <td>
+                        <span id="ambiente">{{ambiente}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Emision:</span>
+                    </td>
+                    <td>
+                        <span id="emision">{{tipoEmision}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <center>
+                            <span class="Descripcion1">Clave de Acceso</span>
+                            <span id="claveAcceso" style="font-family:'Code39AzaleaRegular1';  font-size:73px;"><br>{{claveAcceso}}</span>
+                        </center>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" align="center">
+                        <span id="claveAccesop">{{claveAcceso}}</span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+
+    <tr>
+        <td class="BordesTablas">
+            <table border="0" width="100%" height="100%">
+                <tr>
+                    <td colspan="2">
+                        <h2 align="center" class="Descripcion1" id="razonSocial">{{razonSocial}} </h2>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td width="40%">
+                        &nbsp;&nbsp;<span class="Descripcion1">Direccion <br>&nbsp;&nbsp;Matriz:</span>
+                    </td>
+                    <td>
+                        <span id="dirMatriz">{{dirMatriz}}</span><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Direccion <br>&nbsp;&nbsp;Sucursal:</span>
+                    </td>
+                    <td>
+                        <span id="dirEstablecimiento">{{dirEstablecimiento}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Contribuyente Esp. No:</span>
+                    </td>
+                    <td>
+                        <span id="contribuyenteEspecial">{{contribuyenteEspecial}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;<span class="Descripcion1">Obligado a llevar<br>&nbsp;&nbsp;contabilidad:</span>
+                    </td>
+                    <td>
+                        <span id="obligadoContabilidad">{{obligadoContabilidad}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" align="center">
+                        &nbsp;&nbsp;<span class="Descripcion1">{{cadenaAgenteRetencion}}</span>
+                        <br>&nbsp;&nbsp;<span class="Descripcion1">{{contribuyenteRimpe}}</span>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+
+</table>
+<table border="0" width="1160" cellspacing="1" class="BordesTablas">
+    <tr>
+        <td width="35%">
+            &nbsp;&nbsp;<span class="Descripcion1">Razon Social/Nombres y Apellidos:</span>
+        </td>
+        <td colspan="3">
+            <span id="razonSocialSujetoRetenido">{{razonSocialSujetoRetenido}}</span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            &nbsp;&nbsp;<span class="Descripcion1">Identificacion:</span>
+        </td>
+        <td>
+            <span id="identificacionSujetoRetenido">{{identificacionSujetoRetenido}}</span>
+        </td>
+        <td>
+            &nbsp;&nbsp;<span class="Descripcion1">Fecha Emision:</span>
+        </td>
+        <td>
+            <span id="fechaEmision">{{fechaEmision}}</span>
+        </td>
+
+        <td>
+            &nbsp;&nbsp;<span class="Descripcion1">Periodo Fiscal:</span>
+        </td>
+        <td>
+            <span id="periodoFiscal">{{periodoFiscal}}</span>
+        </td>
+    </tr>
+
+</table>
+
+<table align='left' border='1' width='1159' cellspacing='0' class="BordesTablasDetalle">
+    <thead>
+        <tr>
+            <th>Comprobante Sustento</th>
+            <th>Fecha Emisión</th>
+            <th>Impuesto</th>
+            <th>Cód. Retención</th>
+            <th>Base Imponible</th>
+            <th>% Retener</th>
+            <th width="115">Valor Retenido</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each detalles}}
+        <tr>
+            <td align="center">{{this.codDocSustento}} - {{this.numDocSustento}}</td>
+            <td align="center">{{this.fechaEmisionDocSustento}}</td>
+            <td align="center">{{this.codigoImpuesto}}</td>
+            <td align="center">{{this.codigoRetencion}}</td>
+            <td align="right">{{this.baseImponible}}</td>
+            <td align="right">{{this.porcentajeRetener}}</td>
+            <td align="right">{{this.valorRetenido}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<br>
+<table id="ColSub" width="1160" border="0">
+    <tr>
+        <td width="700">
+            <table align='left' border='0' cellspacing='3' class="BordesTablasAdi">
+                <tr>
+                    <th colspan="2">Informacion Adicional</th>
+                </tr>
+                <tbody>
+                    {{#each datosinfoadicional}}
+                    <tr>
+                        <td class="Descripcion1Adi">{{this.campo}}</td>
+                        <td class="DatosAdi">{{this.valorcampo}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </td>
+
+        <td width="80"></td>
+        <td class="BordesTablas" width="380" valign="top" align="right">
+            <table border="0" width="100%" id="tblSubtotales">
+                <tr>
+                    <td align="left">
+                        <span class="Descripcion1">TOTAL RETENIDO:</span>
+                    </td>
+                    <td width="105" align="right">
+                        <span id="TOTALRETENIDO">{{totalRetenido}}</span>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+
+    </tr>
+</table>

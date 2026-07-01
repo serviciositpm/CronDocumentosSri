@@ -6,6 +6,7 @@ import { IInvoiceParser } from '../../domain/services/IInvoiceParser';
 import { INotaDebitoParser } from '../../domain/services/INotaDebitoParser';
 import { INotaCreditoParser } from '../../domain/services/INotaCreditoParser';
 import { IGuiaRemisionParser } from '../../domain/services/IGuiaRemisionParser';
+import { IRetencionParser } from '../../domain/services/IRetencionParser';
 import { IPdfGenerator } from '../../domain/services/IPdfGenerator';
 import { GetClavesAccesoUseCase } from './GetClavesAccesoUseCase';
 import { obtenerCodDocDesdeClaveAcceso, TIPO_COMPROBANTE } from '../../shared/utils/claveacceso.utils';
@@ -20,6 +21,7 @@ export class ProcessInvoicesUseCase {
     private notaDebitoParser: INotaDebitoParser,
     private notaCreditoParser: INotaCreditoParser,
     private guiaRemisionParser: IGuiaRemisionParser,
+    private retencionParser: IRetencionParser,
     private pdfGenerator: IPdfGenerator
   ) {}
 
@@ -61,6 +63,11 @@ export class ProcessInvoicesUseCase {
           case TIPO_COMPROBANTE.GUIA_REMISION: {
             const guiaRemision = await this.guiaRemisionParser.parse(xmlAutorizado, clave.claveAcceso);
             rutaPdf = await this.pdfGenerator.generarGuiaRemision(guiaRemision, credencial.urlDestino);
+            break;
+          }
+          case TIPO_COMPROBANTE.RETENCION: {
+            const retencion = await this.retencionParser.parse(xmlAutorizado, clave.claveAcceso);
+            rutaPdf = await this.pdfGenerator.generarRetencion(retencion, credencial.urlDestino);
             break;
           }
           case TIPO_COMPROBANTE.FACTURA:

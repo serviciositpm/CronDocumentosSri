@@ -8,6 +8,7 @@ import { XmlToInvoiceParser } from './infrastructure/parsing/XmlToInvoiceParser'
 import { XmlToNotaDebitoParser } from './infrastructure/parsing/XmlToNotaDebitoParser';
 import { XmlToNotaCreditoParser } from './infrastructure/parsing/XmlToNotaCreditoParser';
 import { XmlToGuiaRemisionParser } from './infrastructure/parsing/XmlToGuiaRemisionParser';
+import { XmlToRetencionParser } from './infrastructure/parsing/XmlToRetencionParser';
 import { PdfGeneratorService } from './infrastructure/pdf/PdfGeneratorService';
 import MongoConnection from './infrastructure/database/mongodb/MongoConnection';
 import { logger } from './config/logger';
@@ -26,10 +27,20 @@ async function main() {
     const notaDebitoParser = new XmlToNotaDebitoParser();
     const notaCreditoParser = new XmlToNotaCreditoParser();
     const guiaRemisionParser = new XmlToGuiaRemisionParser();
+    const retencionParser = new XmlToRetencionParser();
     const pdfGen = new PdfGeneratorService();
 
     const processUseCase = new ProcessInvoicesUseCase(
-      credRepo, facturaRepo, logRepo, sriClient, parser, notaDebitoParser, notaCreditoParser, guiaRemisionParser, pdfGen
+      credRepo, 
+      facturaRepo, 
+      logRepo, 
+      sriClient, 
+      parser, 
+      notaDebitoParser, 
+      notaCreditoParser, 
+      guiaRemisionParser, 
+      retencionParser, 
+      pdfGen
     );
 
     let isRunning = false;
