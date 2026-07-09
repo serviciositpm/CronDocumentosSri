@@ -55,12 +55,15 @@ export class Factura {
     public readonly baseImponible12: number,
     public readonly baseImponible15: number,
     public readonly baseImponible5: number,
+    public readonly baseImponible8: number,      // IVA 8% (turismo/feriados, codigoPorcentaje=8)
     public readonly baseImponible0: number,
     public readonly noobjetoiva: number,
     public readonly excentoiva: number,
-    public readonly valor: number,
+    public readonly ice: number,                 // ICE (codigo=3)
+    public readonly valorIva12: number,          // IVA 12% histórico (codigoPorcentaje 2 o 3)
     public readonly valorIva15: number,
     public readonly valorIva5: number,
+    public readonly valorIva8: number,           // IVA 8% (turismo/feriados)
     public readonly irbpnr: number,
     public readonly formaPago: string,
     public readonly total: number,

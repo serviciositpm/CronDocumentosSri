@@ -42,25 +42,47 @@ export class XmlToInvoiceParser implements IInvoiceParser {
     const moneda = infoFactura.moneda?.[0] || 'DOLAR';
     const codDocReembolso = infoFactura.codDocReembolso?.[0] || '';
 
-    // Impuestos
-    let baseImponible12 = 0, baseImponible15 = 0, baseImponible5 = 0, baseImponible0 = 0;
-    let noobjetoiva = 0, excentoiva = 0, valor = 0, valorIva15 = 0, valorIva5 = 0, irbpnr = 0;
+    // Impuestos — tabla 16 (codigo) y tabla 17 (codigoPorcentaje) de la ficha técnica SRI v2.32
+    //
+    // TABLA 16 – código de impuesto:
+    //   2 = IVA   3 = ICE   5 = IRBPNR
+    //
+    // TABLA 17 – codigoPorcentaje (solo aplica cuando codigo=2, IVA):
+    //   0 = IVA 0%
+    //   2 = IVA 12% (histórico, vigente hasta nov 2023)
+    //   3 = IVA 14% (histórico, vigente 2016)
+    //   4 = IVA 15% (vigente desde abr 2024)
+    //   5 = IVA 5% (vivienda interés social)
+    //   6 = No objeto de IVA
+    //   7 = Exento de IVA
+    //   8 = IVA 8% (turismo en feriados, transitorio)
+    //  10 = IVA 0% (servicios turísticos – uso interno SRI, equivale a código 0)
+    let baseImponible12 = 0, baseImponible15 = 0, baseImponible5 = 0, baseImponible8 = 0, baseImponible0 = 0;
+    let noobjetoiva = 0, excentoiva = 0;
+    let ice = 0, valorIva12 = 0, valorIva15 = 0, valorIva5 = 0, valorIva8 = 0, irbpnr = 0;
+
     const totalConImpuestos = infoFactura.totalConImpuestos[0];
     if (totalConImpuestos?.totalImpuesto) {
       for (const imp of totalConImpuestos.totalImpuesto) {
-        const codigo = imp.codigo[0];
+        const codigo = imp.codigo[0];          // tipo de impuesto
         const codigoPorcentaje = imp.codigoPorcentaje[0];
         const base = parseFloat(imp.baseImponible[0]);
         const valImp = parseFloat(imp.valor[0]);
-        if (codigo === '5') irbpnr = valImp;
+
+        if (codigo === '3') { ice += valImp; continue; }   // ICE (puede venir por ítem, sumamos)
+        if (codigo === '5') { irbpnr = valImp; continue; } // IRBPNR
+
+        // IVA (codigo === '2')
         switch (codigoPorcentaje) {
-          case '0': baseImponible0 = base; break;
-          case '2': baseImponible12 = base; valor = valImp; break;
-          case '3': baseImponible12 = base; valor = valImp; break;
-          case '4': baseImponible15 = base; valorIva15 = valImp; break;
-          case '5': baseImponible5 = base; valorIva5 = valImp; break;
-          case '6': noobjetoiva = base; break;
-          case '7': excentoiva = base; break;
+          case '0':
+          case '10': baseImponible0 += base; break;                        // 0% e int. turístico 0%
+          case '2':
+          case '3':  baseImponible12 += base; valorIva12 += valImp; break; // 12% y 14% históricos
+          case '4':  baseImponible15 += base; valorIva15 += valImp; break; // 15% vigente
+          case '5':  baseImponible5  += base; valorIva5  += valImp; break; // 5%
+          case '6':  noobjetoiva     += base; break;                       // No objeto
+          case '7':  excentoiva      += base; break;                       // Exento
+          case '8':  baseImponible8  += base; valorIva8  += valImp; break; // 8% turismo feriados
         }
       }
     }
@@ -148,9 +170,9 @@ export class XmlToInvoiceParser implements IInvoiceParser {
       importeTotal, totalDescuento, moneda, guiaRemision, ambiente, tipoEmision,
       razonSocial, nombreComercial, ruc, claveAcceso, infoTributaria.codDoc[0],
       estab, ptoEmi, secuencial, dirMatriz, agenteRetencion, cadenaAgenteRetencion,
-      contribuyenteRimpe, baseImponible12, baseImponible15, baseImponible5,
-      baseImponible0, noobjetoiva, excentoiva, valor, valorIva15, valorIva5,
-      irbpnr, formaPago, totalPago, plazo, unidadTiempo, detalles, datosinfoadicional,
+      contribuyenteRimpe, baseImponible12, baseImponible15, baseImponible5, baseImponible8,
+      baseImponible0, noobjetoiva, excentoiva, ice, valorIva12, valorIva15, valorIva5,
+      valorIva8, irbpnr, formaPago, totalPago, plazo, unidadTiempo, detalles, datosinfoadicional,
       reembolsos, codDocReembolso
     );
   }
