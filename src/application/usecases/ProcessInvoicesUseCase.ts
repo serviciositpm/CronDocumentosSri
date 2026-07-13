@@ -10,6 +10,7 @@ import { IRetencionParser } from '../../domain/services/IRetencionParser';
 import { IPdfGenerator } from '../../domain/services/IPdfGenerator';
 import { GetClavesAccesoUseCase } from './GetClavesAccesoUseCase';
 import { obtenerCodDocDesdeClaveAcceso, TIPO_COMPROBANTE } from '../../shared/utils/claveacceso.utils';
+import { resolverRutaDestino } from '../../shared/utils/rutadestino.util';
 
 export class ProcessInvoicesUseCase {
   constructor(
@@ -47,27 +48,35 @@ export class ProcessInvoicesUseCase {
         const xmlAutorizado = result.RespuestaAutorizacionComprobante.autorizaciones.autorizacion.comprobante;
 
         const codDoc = obtenerCodDocDesdeClaveAcceso(clave.claveAcceso);
+        // Construye la ruta estructurada año/mes/tipo y crea las carpetas
+        // si no existen. El archivo queda así:
+        //   \\servidor\base\2026\JULIO\GUIA\RUC-EST-PTO-SEC.pdf
+        const rutaDestino = await resolverRutaDestino(
+          credencial.urlDestino,
+          clave.claveAcceso,
+          codDoc
+        );
         let rutaPdf: string;
 
         switch (codDoc) {
           case TIPO_COMPROBANTE.NOTA_DEBITO: {
             const notaDebito = await this.notaDebitoParser.parse(xmlAutorizado, clave.claveAcceso);
-            rutaPdf = await this.pdfGenerator.generarNotaDebito(notaDebito, credencial.urlDestino);
+            rutaPdf = await this.pdfGenerator.generarNotaDebito(notaDebito, rutaDestino);
             break;
           }
           case TIPO_COMPROBANTE.NOTA_CREDITO: {
             const notaCredito = await this.notaCreditoParser.parse(xmlAutorizado, clave.claveAcceso);
-            rutaPdf = await this.pdfGenerator.generarNotaCredito(notaCredito, credencial.urlDestino);
+            rutaPdf = await this.pdfGenerator.generarNotaCredito(notaCredito, rutaDestino);
             break;
           }
           case TIPO_COMPROBANTE.GUIA_REMISION: {
             const guiaRemision = await this.guiaRemisionParser.parse(xmlAutorizado, clave.claveAcceso);
-            rutaPdf = await this.pdfGenerator.generarGuiaRemision(guiaRemision, credencial.urlDestino);
+            rutaPdf = await this.pdfGenerator.generarGuiaRemision(guiaRemision, rutaDestino);
             break;
           }
           case TIPO_COMPROBANTE.RETENCION: {
             const retencion = await this.retencionParser.parse(xmlAutorizado, clave.claveAcceso);
-            rutaPdf = await this.pdfGenerator.generarRetencion(retencion, credencial.urlDestino);
+            rutaPdf = await this.pdfGenerator.generarRetencion(retencion, rutaDestino);
             break;
           }
           case TIPO_COMPROBANTE.FACTURA:
@@ -76,7 +85,7 @@ export class ProcessInvoicesUseCase {
             // se intenta parsear como factura (comportamiento original).
             // A futuro, agrega más "case" aquí (guía de remisión, retención, etc.)
             const factura = await this.parser.parse(xmlAutorizado, clave.claveAcceso);
-            rutaPdf = await this.pdfGenerator.generarFactura(factura, credencial.urlDestino);
+            rutaPdf = await this.pdfGenerator.generarFactura(factura, rutaDestino);
             break;
           }
         }
