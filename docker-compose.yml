@@ -1,0 +1,84 @@
+services:
+
+  # ─────────────────────────────────────────
+  # Servicio principal: CronDocumentosSRI
+  # ─────────────────────────────────────────
+  cron-sri:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+    image: cron-documentos-sri:latest
+    container_name: cron-sri
+    restart: unless-stopped        # Se reinicia solo si cae, pero no si lo paras manualmente
+
+    env_file:
+      - .env                       # Todas las variables sensibles van aquí, fuera del repo
+
+    environment:
+      # Sobrescribimos MONGO_URI para apuntar al contenedor de mongo de este compose
+      MONGO_URI: mongodb://mongo:27017
+      PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium
+      NODE_ENV: production
+
+    volumes:
+      # Monta el share de Windows (ya montado en el host Ubuntu) dentro del contenedor.
+      # En el host Ubuntu debes tener montado el share en /mnt/erpdocumentos
+      # (ver instrucciones de /etc/fstab más abajo).
+      # El contenedor lo ve como /pdfs y el .env debe tener URL_DESTINO=/pdfs/pdfdocprueba
+      - /mnt/erpdocumentos:/pdfs:rw
+
+    depends_on:
+      mongo:
+        condition: service_healthy  # Espera que Mongo esté listo antes de arrancar
+
+    # Puppeteer necesita acceso a /dev/shm para renderizado.
+    # Sin esto Chromium puede crashear con páginas complejas.
+    shm_size: '256mb'
+
+    # Restricciones de recursos para que no consuma todo el servidor
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  # ─────────────────────────────────────────
+  # MongoDB: almacena los logs del servicio
+  # ─────────────────────────────────────────
+  mongo:
+    image: mongo:7
+    container_name: cron-sri-mongo
+    restart: unless-stopped
+
+    volumes:
+      # Persiste los datos de Mongo aunque el contenedor se recree
+      - mongo_data:/data/db
+
+    # MongoDB NO expone el puerto al exterior (no necesita ser accesible
+    # desde fuera del servidor). Solo cron-sri se conecta a él internamente.
+    expose:
+      - "27017"
+
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  mongo_data:
+    driver: local
