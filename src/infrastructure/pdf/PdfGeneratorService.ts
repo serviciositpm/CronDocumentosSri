@@ -100,6 +100,11 @@ export class PdfGeneratorService implements IPdfGenerator {
         timeout: 120000
       });
 
+      // Esperar a que el script de ajuste del código de barras termine
+      // (el script corre en DOMContentLoaded/load, pero le damos un tick extra
+      //  para que el layout del navegador recalcule los anchos antes del PDF)
+      await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 200)));
+
       await page.pdf({
         path: outputPath,
         format: 'A4',

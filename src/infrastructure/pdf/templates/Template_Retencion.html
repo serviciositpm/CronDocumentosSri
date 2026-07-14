@@ -109,7 +109,7 @@
                     <td colspan="2">
                         <center>
                             <span class="Descripcion1">Clave de Acceso</span>
-                            <span id="claveAcceso" style="font-family:'Code39AzaleaRegular1';  font-size:73px;"><br>*{{claveAcceso}}*</span>
+                            <span id="claveAcceso" style="font-family:'Code39AzaleaRegular1'; font-size:40px; display:block; width:100%; letter-spacing:0; white-space:nowrap;"><br>*{{claveAcceso}}*</span>
                         </center>
                     </td>
                 </tr>
@@ -274,3 +274,29 @@
 
     </tr>
 </table>
+<script>
+// Estira el código de barras para que ocupe exactamente el ancho del td
+(function() {
+  function ajustarBarcode() {
+    var spans = document.querySelectorAll("#claveAcceso");
+    spans.forEach(function(span) {
+      var td = span.closest("td") || span.parentElement;
+      var maxW = td.offsetWidth - 10;
+      var curW = span.scrollWidth;
+      if (curW > 0 && maxW > 0) {
+        var scale = maxW / curW;
+        span.style.transform = "scaleX(" + scale + ")";
+        span.style.transformOrigin = "left center";
+        span.style.display = "block";
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", ajustarBarcode);
+  } else {
+    ajustarBarcode();
+  }
+  window.addEventListener("load", ajustarBarcode);
+})();
+</script>
+</body>
