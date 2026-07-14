@@ -61,10 +61,10 @@ services:
       # Persiste los datos de Mongo aunque el contenedor se recree
       - mongo_data:/data/db
 
-    # MongoDB NO expone el puerto al exterior (no necesita ser accesible
-    # desde fuera del servidor). Solo cron-sri se conecta a él internamente.
-    expose:
-      - "27017"
+    # MongoDB expuesto en el puerto 27017 para conexiones remotas
+    # desde otros equipos de la red interna.
+    ports:
+      - "27017:27017"
 
     healthcheck:
       test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
