@@ -11,6 +11,7 @@ import { IPdfGenerator } from '../../domain/services/IPdfGenerator';
 import { GetClavesAccesoUseCase } from './GetClavesAccesoUseCase';
 import { obtenerCodDocDesdeClaveAcceso, TIPO_COMPROBANTE } from '../../shared/utils/claveacceso.utils';
 import { resolverRutaDestino } from '../../shared/utils/rutadestino.util';
+import { aRutaUNC } from '../../shared/utils/normalizarrutabae.utils';
 
 export class ProcessInvoicesUseCase {
   constructor(
@@ -90,7 +91,7 @@ export class ProcessInvoicesUseCase {
           }
         }
 
-        await this.facturaRepo.actualizarRutaPdf(clave.claveAcceso, rutaPdf);
+        await this.facturaRepo.actualizarRutaPdf(clave.claveAcceso, aRutaUNC(rutaPdf));
         await this.logRepo.info(`PDF generado para ${clave.claveAcceso}`, { ruta: rutaPdf, codDoc });
       } catch (error: any) {
         await this.logRepo.error(`Error con clave ${clave.claveAcceso}`, { error: error.message });
