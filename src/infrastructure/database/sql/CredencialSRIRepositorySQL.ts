@@ -1,7 +1,7 @@
 import { ICredencialSRIRepository } from "../../../domain/repositories/ICredencialSRIRepository";
 import { CredencialSRI } from "../../../domain/entities/CredencialSRI";
 import SqlConnection from "./SqlConnection";
-import { normalizarRutaBase } from "../../../shared/utils/normalizarrutabae.utils";
+import { normalizarRutaBase } from "../../../shared/utils/normalizarrutabase.utils";
 
 export class CredencialSRIRepositorySQL implements ICredencialSRIRepository {
   async obtenerCredenciales(): Promise<CredencialSRI | null> {

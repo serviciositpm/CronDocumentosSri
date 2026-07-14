@@ -30,7 +30,6 @@ FROM node:20-slim AS runner
 #   3. Reduce el tamaño de la imagen final
 RUN apt-get update && apt-get install -y --no-install-recommends \
     chromium \
-    # Dependencias de Chromium headless
     libatk-bridge2.0-0 \
     libatk1.0-0 \
     libcups2 \
@@ -45,12 +44,30 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgbm1 \
     libasound2 \
     libxshmfence1 \
-    # Cliente SMB para montar el share de Windows desde docker-compose
     cifs-utils \
-    # Fuentes para que los PDFs rendericen bien
     fonts-liberation \
     fonts-dejavu-core \
+    # wget y unzip para descargar la fuente Code39Azalea durante el build
+    wget \
+    unzip \
+    # fontconfig para registrar la fuente en el sistema
+    fontconfig \
  && rm -rf /var/lib/apt/lists/*
+
+# ── Instalar fuente Code39Azalea (licencia Creative Commons CC BY-ND) ──
+# Chromium headless necesita la fuente registrada en el sistema para
+# renderizarla en los PDFs. La descargamos del sitio oficial de Azalea
+# Software y la registramos con fc-cache para que Chromium la encuentre.
+RUN mkdir -p /usr/share/fonts/truetype/code39azalea \
+ && wget -q "https://azaleabarcodes.com/free-font/Code39Azalea.zip" \
+         -O /tmp/Code39Azalea.zip \
+ && unzip -q /tmp/Code39Azalea.zip -d /tmp/code39 \
+ && find /tmp/code39 -name "*.ttf" -exec cp {} /usr/share/fonts/truetype/code39azalea/ \; \
+ && find /tmp/code39 -name "*.otf" -exec cp {} /usr/share/fonts/truetype/code39azalea/ \; \
+ && fc-cache -fv \
+ && rm -rf /tmp/Code39Azalea.zip /tmp/code39 \
+ # Verificar que la fuente quedó registrada
+ && fc-list | grep -i "code39" || echo "ADVERTENCIA: fuente Code39 no encontrada"
 
 WORKDIR /app
 

@@ -11,7 +11,7 @@ import { IPdfGenerator } from '../../domain/services/IPdfGenerator';
 import { GetClavesAccesoUseCase } from './GetClavesAccesoUseCase';
 import { obtenerCodDocDesdeClaveAcceso, TIPO_COMPROBANTE } from '../../shared/utils/claveacceso.utils';
 import { resolverRutaDestino } from '../../shared/utils/rutadestino.util';
-import { aRutaUNC } from '../../shared/utils/normalizarrutabae.utils';
+import { aRutaUNC } from '../../shared/utils/normalizarrutabase.utils';
 
 export class ProcessInvoicesUseCase {
   constructor(
