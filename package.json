@@ -14,6 +14,7 @@
   "description": "",
   "dependencies": {
     "bwip-js": "^4.10.1",
+    "dotenv": "^17.4.2",
     "fast-xml-parser": "^5.8.0",
     "handlebars": "^4.7.9",
     "mongoose": "^9.6.2",
@@ -36,7 +37,6 @@
     "@types/puppeteer": "^5.4.7",
     "@types/soap": "^0.18.0",
     "@types/xml2js": "^0.4.14",
-    "dotenv": "^17.4.2",
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3"
