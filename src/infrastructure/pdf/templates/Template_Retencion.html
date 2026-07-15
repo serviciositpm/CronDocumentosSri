@@ -1,357 +1,398 @@
-<style>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Comprobante de Retención Electrónico</title>
+    <style>
+        /* ── Layout A4 y Configuración General ── */
+        @page {
+            size: A4 portrait;
+            margin: 8mm;
+        }
+        * { 
+            box-sizing: border-box; 
+        }
+        
+        :root {
+            --primary-color: #1f4e79;
+            --border-color: #cbd5e1;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+        }
 
-    /* ── A4 layout ── */
-    @page {
-        size: A4 portrait;
-        margin: 8mm 8mm 8mm 8mm;
-    }
-    * { box-sizing: border-box; }
-    html, body {
-        width: 194mm;        /* A4 210mm - 2x8mm márgenes */
-        margin: 0;
-        padding: 0;
-        font-family: "Bookman L", Arial, sans-serif;
-        font-size: 8pt;
-        color: #222;
-    }
-    table {
-        table-layout: fixed;
-        width: 100%;
-        border-collapse: collapse;
-        word-wrap: break-word;
-        word-break: break-word;
-    }
-    img.barcode {
-        width: 100%;
-        height: 18mm;
-        display: block;
-        object-fit: fill;
-    }
+        html, body {
+            width: 194mm; /* A4 210mm - 2x8mm márgenes */
+            margin: 0;
+            padding: 0;
+            font-family: "Bookman L", Arial, sans-serif;
+            font-size: 8pt;
+            color: var(--text-dark);
+            line-height: 1.3;
+        }
 
-    html, body, h1, h2, h3, h4, h5, h6 {
-        font-family: "Bookman L", Arial, sans-serif;
-    }
-    h1 { font-size: 11pt; margin: 1.5mm 0; }
-    h2 { font-size: 9.5pt; margin: 1.5mm 0; color: #1f4e79; }
+        h1 { font-size: 11pt; margin: 1.5mm 0; }
+        h2 { font-size: 9.5pt; margin: 1.5mm 0; color: var(--primary-color); }
 
-    .Descripcion1 {
-        font-weight: bold;
-    }
+        /* Estructuras de Contenedores con Bordes (Estilo RIDE) */
+        .bloque-bordeado {
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 3.5mm;
+            margin-bottom: 3mm;
+            background-color: #ffffff;
+        }
 
-    .BordesTablas {
-        border: 1.5px solid #1f4e79;
-        border-radius: 6px;
-        -moz-border-radius: 6px;
-        border-collapse: collapse;
-    }
+        /* ── Cabecera: Logo, Emisor y Autorización SRI ── */
+        .cabecera-root {
+            display: flex;
+            gap: 4mm;
+            width: 100%;
+            margin-bottom: 3mm;
+        }
+        
+        .cab-izquierda {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3mm;
+        }
 
-    .BordesTablasDetalle {
-        border: 1.5px solid #1f4e79;
-        border-collapse: collapse;
-    }
+        .cab-logo {
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            height: 28mm;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2mm;
+            background-color: #ffffff;
+        }
+        .cab-logo img {
+            max-width: 100%;
+            max-height: 24mm;
+            object-fit: contain;
+        }
+        .cab-logo .no-logo {
+            font-size: 7pt;
+            color: var(--text-muted);
+            text-align: center;
+        }
 
-    .BordesTablasDetalle th {
-        background-color: #1f4e79;
-        color: #ffffff;
-        font-size: 9px;
-        padding: 4px 5px;
-        text-align: center;
-        border: 1px solid #1f4e79;
-    }
+        .cab-emisor {
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 3mm;
+            background-color: #ffffff;
+            flex-grow: 1;
+        }
+        .cab-emisor h2 {
+            margin-top: 0;
+            margin-bottom: 2mm;
+            font-size: 10pt;
+            text-transform: uppercase;
+        }
+        
+        .fila-dato {
+            display: flex;
+            margin-bottom: 1.2mm;
+            font-size: 7.5pt;
+        }
+        .fila-dato .lbl {
+            font-weight: bold;
+            color: var(--primary-color);
+            width: 32mm;
+            flex-shrink: 0;
+        }
+        .fila-dato .val {
+            color: var(--text-dark);
+        }
 
-    .BordesTablasDetalle td {
-        font-size: 8.5px;
-        padding: 3px 5px;
-        border: 1px solid #c9d3dc;
-        word-wrap: break-word;
-        word-break: break-word;
-    }
+        .cab-autorizacion {
+            flex: 0 0 82mm;
+            width: 82mm;
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 4mm 3.5mm;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+        }
+        .cab-autorizacion h1 {
+            font-size: 11pt;
+            color: var(--primary-color);
+            margin: 0 0 2mm 0;
+            text-align: center;
+        }
+        .cab-autorizacion .tipo-doc {
+            font-size: 11pt;
+            font-weight: bold;
+            text-align: center;
+            color: var(--primary-color);
+            letter-spacing: 0.5px;
+            margin-bottom: 3mm;
+        }
+        .cab-autorizacion .clave-label {
+            font-weight: bold;
+            text-align: center;
+            font-size: 7.5pt;
+            margin-top: 2.5mm;
+            color: var(--primary-color);
+        }
+        .cab-autorizacion .clave-texto {
+            font-size: 6pt;
+            text-align: center;
+            word-break: break-all;
+            color: var(--text-dark);
+            margin-top: 1mm;
+            font-family: monospace;
+        }
+        img.barcode {
+            width: 100%;
+            height: 11mm;
+            display: block;
+            object-fit: fill;
+            margin-top: 2mm;
+        }
 
-    .BordesTablasDetalle tr:nth-child(even) td {
-        background: #f7f9fb;
-    }
+        /* ── Información del Sujeto Retenido ── */
+        .info-comprador {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .info-comprador td {
+            padding: 1.2mm 2mm;
+            font-size: 8pt;
+            vertical-align: top;
+        }
+        .info-comprador .lbl {
+            font-weight: bold;
+            color: var(--primary-color);
+            width: 46mm;
+        }
 
-    /* ─────────────────────────────────────────────────────────
-       Bloque inferior: Informacion Adicional (izquierda, flexible)
-       + Total Retenido (derecha, ancho fijo). SIEMPRE a la derecha
-       y NUNCA excede el ancho de página (194mm).
-       ───────────────────────────────────────────────────────── */
-    .fila-totales {
-        display: flex;
-        align-items: flex-start;
-        gap: 5mm;
-        width: 194mm;
-        margin-top: 4mm;
-        page-break-inside: avoid;
-    }
-    .col-izquierda {
-        flex: 1 1 auto;
-        min-width: 0;
-    }
-    .col-derecha {
-        flex: 0 0 62mm;
-        width: 62mm;
-    }
+        /* ── Tabla de Detalles e Items (Retenciones) ── */
+        .tabla-detalles-container {
+            margin-bottom: 4mm;
+        }
+        .BordesTablasDetalle {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .BordesTablasDetalle th {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            font-size: 8pt;
+            font-weight: bold;
+            padding: 2mm 1.5mm;
+            text-align: center;
+            border: 1px solid var(--primary-color);
+        }
+        .BordesTablasDetalle td {
+            font-size: 7.5pt;
+            padding: 1.8mm 1.5mm;
+            border: 1px solid var(--border-color);
+        }
+        .BordesTablasDetalle tr:nth-child(even) td {
+            background-color: var(--bg-light);
+        }
 
-    .BordesTablasAdi {
-        border: 1.5px solid #1f4e79;
-        border-radius: 6px;
-        -moz-border-radius: 6px;
-        border-collapse: collapse;
-        width: 100%;
-    }
+        /* ── Bloque de Cierre (Información Extra / Totales) ── */
+        .fila-totales {
+            display: flex;
+            align-items: flex-start;
+            gap: 4mm;
+            width: 194mm;
+            margin-top: 2mm;
+            page-break-inside: avoid;
+        }
+        .col-izquierda {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3mm;
+        }
+        .col-derecha {
+            flex: 0 0 76mm;
+            width: 76mm;
+        }
 
-    .BordesTablasAdi th {
-        background: #1f4e79;
-        color: #ffffff;
-        text-align: left;
-        padding: 4px 6px;
-        font-size: 8px;
-    }
+        /* Información Adicional */
+        .BordesTablasAdi {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--primary-color);
+        }
+        .BordesTablasAdi th {
+            background: var(--primary-color);
+            color: #ffffff;
+            text-align: left;
+            padding: 1.5mm 2.5mm;
+            font-size: 7.5pt;
+        }
+        .BordesTablasAdi td {
+            border: 1px solid var(--border-color);
+            padding: 1.5mm 2.5mm;
+            font-size: 7.5pt;
+        }
+        .BordesTablasAdi td.lbl-adi {
+            font-weight: bold;
+            background-color: var(--bg-light);
+            width: 30mm;
+        }
 
-    .BordesTablasAdi td {
-        border: 1px solid #c9d3dc;
-        padding: 4px 6px;
-        font-size: 8.5px;
-        word-wrap: break-word;
-        white-space: pre-wrap;
-    }
+        /* Tabla de Desgloses de Subtotales */
+        #tblSubtotales {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--primary-color);
+        }
+        #tblSubtotales td {
+            padding: 1.8mm 2.5mm;
+            font-size: 8pt;
+            border-bottom: 1px solid var(--border-color);
+        }
+        #tblSubtotales td:first-child {
+            text-align: left;
+            font-weight: bold;
+            color: var(--text-dark);
+            width: 60%;
+        }
+        #tblSubtotales td:last-child {
+            text-align: right;
+            width: 40%;
+            font-weight: bold;
+        }
+        #tblSubtotales tr:last-child td {
+            background: var(--primary-color);
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 9pt;
+            border-bottom: none;
+        }
+        #tblSubtotales tr:last-child td:first-child {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
 
-    .Descripcion1Adi {
-        width: 36mm;
-        font-weight: bold;
-        background: #f7f9fb;
-    }
+<div class="cabecera-root">
+    <div class="cab-izquierda">
+        <div class="cab-logo">
+            <img class="logo-img" src="img/LogoPromariscoNuevaPescanova.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" alt="Logo" />
+            <span class="no-logo" style="display:none;">NO TIENE LOGO</span>
+        </div>
 
-    .DatosAdi {
-        width: auto;
-    }
+        <div class="cab-emisor">
+            <h2>{{razonSocial}}</h2>
+            <div class="fila-dato"><span class="lbl">Dirección Matriz:</span><span class="val">{{dirMatriz}}</span></div>
+            <div class="fila-dato"><span class="lbl">Dirección Sucursal:</span><span class="val">{{dirEstablecimiento}}</span></div>
+            <div class="fila-dato"><span class="lbl">Contribuyente Esp. No:</span><span class="val">{{contribuyenteEspecial}}</span></div>
+            <div class="fila-dato"><span class="lbl">Obligado a llevar contabilidad:</span><span class="val">{{obligadoContabilidad}}</span></div>
+            
+            {{#if cadenaAgenteRetencion}}
+                <div class="fila-dato" style="color: var(--primary-color); font-weight: bold; margin-top: 1mm;">
+                    <span class="lbl" style="width: 100%;">{{cadenaAgenteRetencion}}</span>
+                </div>
+            {{/if}}
+            {{#if contribuyenteRimpe}}
+                <div class="fila-dato" style="color: var(--primary-color); font-weight: bold;">
+                    <span class="lbl" style="width: 100%;">{{contribuyenteRimpe}}</span>
+                </div>
+            {{/if}}
+        </div>
+    </div>
 
-    #tblSubtotales {
-        width: 100%;
-        border-collapse: collapse;
-        table-layout: fixed;
-        border: 1.5px solid #1f4e79;
-        border-radius: 6px;
-    }
-    #tblSubtotales td {
-        padding: 3mm 2mm;
-        font-size: 9.5px;
-        background: #1f4e79;
-        color: #ffffff;
-        font-weight: bold;
-    }
-    #tblSubtotales td:first-child {
-        text-align: left;
-        width: 60%;
-    }
-    #tblSubtotales td:last-child {
-        text-align: right;
-        width: 40%;
-        white-space: nowrap;
-    }
-</style>
+    <div class="cab-autorizacion">
+        <h1>R.U.C: {{ruc}}</h1>
+        <div class="tipo-doc">COMPROBANTE DE RETENCIÓN</div>
+        <div class="fila-dato"><span class="lbl" style="width:20mm;">No:</span><span class="val">{{estab}}-{{ptoEmi}}-{{secuencial}}</span></div>
+        <div class="fila-dato"><span class="lbl" style="width:28mm;">Nro. Autorización:</span><span class="val" style="word-break:break-all">{{claveAcceso}}</span></div>
+        <div class="fila-dato"><span class="lbl" style="width:28mm;">Fecha Autorización:</span><span class="val">{{fechaEmision}}</span></div>
+        <div class="fila-dato"><span class="lbl" style="width:20mm;">Ambiente:</span><span class="val">{{ambiente}}</span></div>
+        <div class="fila-dato"><span class="lbl" style="width:20mm;">Emisión:</span><span class="val">{{tipoEmision}}</span></div>
+        
+        <div class="clave-label">Clave de Acceso</div>
+        <img class="barcode" src="{{barcodeImg}}" alt="Código de barras" />
+        <div class="clave-texto">{{claveAcceso}}</div>
+    </div>
+</div>
 
-
-<table border="0">
-    <tr>
-        <td>
-            <img width="490" height="180" alt="No existe imagen en doc/img/ " src="img/LogoPromariscoNuevaPescanova.jpg" />
-        </td>
-        <td rowspan="2" class="BordesTablas">
-            <table border="0" width="100%">
-                <tr>
-                    <td colspan="2"><h1 align="center">R.U.C: {{ruc}}</h1></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><h1 class="Descripcion1" align="center">COMPROBANTE DE RETENCION</h1></td>
-                </tr>
-                <tr>
-                    <td width="28%">
-                        &nbsp;&nbsp;<span class="Descripcion1">No    </span>
-                    </td>
-                    <td>
-                        <span id="estab">{{estab}}</span>-<span id="ptoEmi">{{ptoEmi}}</span>-<span id="secuencial">{{secuencial}}</span> &emsp;
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Numero de<br>&nbsp;&nbsp;Autorizacion:</span>
-                    </td>
-                    <td>
-                        <span id="autorizacionoffline">{{claveAcceso}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Fecha  de <br>&nbsp;&nbsp;Autorizacion:</span>
-                    </td>
-                    <td>
-                        <span id="fechaAut">{{fechaAut}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Ambiente:</span>
-                    </td>
-                    <td>
-                        <span id="ambiente">{{ambiente}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Emision:</span>
-                    </td>
-                    <td>
-                        <span id="emision">{{tipoEmision}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <center>
-                            <span class="Descripcion1">Clave de Acceso</span>
-                            <img class="barcode" src="{{barcodeImg}}" alt="Código de barras" />
-                        </center>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td colspan="2" align="center">
-                        <span id="claveAccesop">{{claveAcceso}}</span>
-                    </td>
-                </tr>
-            </table>
-        </td>
-
-    <tr>
-        <td class="BordesTablas">
-            <table border="0" width="100%">
-                <tr>
-                    <td colspan="2">
-                        <h2 align="center" class="Descripcion1" id="razonSocial">{{razonSocial}} </h2>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="40%">
-                        &nbsp;&nbsp;<span class="Descripcion1">Direccion <br>&nbsp;&nbsp;Matriz:</span>
-                    </td>
-                    <td>
-                        <span id="dirMatriz">{{dirMatriz}}</span><br>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Direccion <br>&nbsp;&nbsp;Sucursal:</span>
-                    </td>
-                    <td>
-                        <span id="dirEstablecimiento">{{dirEstablecimiento}}</span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Contribuyente Esp. No:</span>
-                    </td>
-                    <td>
-                        <span id="contribuyenteEspecial">{{contribuyenteEspecial}}</span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Obligado a llevar<br>&nbsp;&nbsp;contabilidad:</span>
-                    </td>
-                    <td>
-                        <span id="obligadoContabilidad">{{obligadoContabilidad}}</span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td colspan="2" align="center">
-                        &nbsp;&nbsp;<span class="Descripcion1">{{cadenaAgenteRetencion}}</span>
-                        <br>&nbsp;&nbsp;<span class="Descripcion1">{{contribuyenteRimpe}}</span>
-                    </td>
-                </tr>
-
-            </table>
-        </td>
-    </tr>
-
-</table>
-<table border="0" cellspacing="1" class="BordesTablas">
-    <tr>
-        <td width="35%">
-            &nbsp;&nbsp;<span class="Descripcion1">Razon Social/Nombres y Apellidos:</span>
-        </td>
-        <td colspan="3">
-            <span id="razonSocialSujetoRetenido">{{razonSocialSujetoRetenido}}</span>
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            &nbsp;&nbsp;<span class="Descripcion1">Identificacion:</span>
-        </td>
-        <td>
-            <span id="identificacionSujetoRetenido">{{identificacionSujetoRetenido}}</span>
-        </td>
-        <td>
-            &nbsp;&nbsp;<span class="Descripcion1">Fecha Emision:</span>
-        </td>
-        <td>
-            <span id="fechaEmision">{{fechaEmision}}</span>
-        </td>
-
-        <td>
-            &nbsp;&nbsp;<span class="Descripcion1">Periodo Fiscal:</span>
-        </td>
-        <td>
-            <span id="periodoFiscal">{{periodoFiscal}}</span>
-        </td>
-    </tr>
-
-</table>
-
-<table align='left' border='1' cellspacing='0' class="BordesTablasDetalle">
-    <thead>
+<div class="bloque-bordeado">
+    <table class="info-comprador">
         <tr>
-            <th>Comprobante Sustento</th>
-            <th>Fecha Emisión</th>
-            <th>Impuesto</th>
-            <th>Cód. Retención</th>
-            <th>Base Imponible</th>
-            <th>% Retener</th>
-            <th width="115">Valor Retenido</th>
+            <td class="lbl">Razón Social / Nombres:</td>
+            <td>{{razonSocialSujetoRetenido}}</td>
+            <td class="lbl" style="width:25mm;">Identificación:</td>
+            <td style="width:30mm;">{{identificacionSujetoRetenido}}</td>
         </tr>
-    </thead>
-    <tbody>
-        {{#each detalles}}
         <tr>
-            <td align="left">{{this.descDocSustento}}<br><small>{{this.numDocSustento}}</small></td>
-            <td align="center">{{this.fechaEmisionDocSustento}}</td>
-            <td align="center">{{this.descImpuesto}}</td>
-            <td align="center">{{this.codigoRetencion}}</td>
-            <td align="right">{{this.baseImponible}}</td>
-            <td align="right">{{this.porcentajeRetener}}</td>
-            <td align="right">{{this.valorRetenido}}</td>
+            <td class="lbl">Fecha Emisión:</td>
+            <td>{{fechaEmision}}</td>
+            <td class="lbl">Periodo Fiscal:</td>
+            <td>{{periodoFiscal}}</td>
         </tr>
-        {{/each}}
-    </tbody>
-</table>
-<br>
+    </table>
+</div>
+
+<div class="tabla-detalles-container">
+    <table class="BordesTablasDetalle">
+        <colgroup>
+            <col style="width:25%">
+            <col style="width:12%">
+            <col style="width:18%">
+            <col style="width:11%">
+            <col style="width:12%">
+            <col style="width:10%">
+            <col style="width:12%">
+        </colgroup>
+        <thead>
+            <tr>
+                <th style="text-align: left;">Comprobante</th>
+                <th>Fecha Emisión</th>
+                <th>Impuesto</th>
+                <th>Código</th>
+                <th style="text-align: right;">Base Imponible</th>
+                <th style="text-align: right;">% Retener</th>
+                <th style="text-align: right;">Valor Retenido</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each detalles}}
+            <tr>
+                <td>
+                    <div style="font-weight: bold;">{{this.descDocSustento}}</div>
+                    <div style="font-size: 6.5pt; color: var(--text-muted); margin-top: 0.5mm;">No: {{this.numDocSustento}}</div>
+                </td>
+                <td style="text-align: center;">{{this.fechaEmisionDocSustento}}</td>
+                <td style="text-align: center;">{{this.descImpuesto}}</td>
+                <td style="text-align: center; font-weight: bold;">{{this.codigoRetencion}}</td>
+                <td style="text-align: right;">{{this.baseImponible}}</td>
+                <td style="text-align: right;">{{this.porcentajeRetener}}%</td>
+                <td style="text-align: right; font-weight: bold;">{{this.valorRetenido}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
 
 <div class="fila-totales">
     <div class="col-izquierda">
-        <table class="BordesTablasAdi" border="0" cellspacing="0">
-            <tr>
-                <th colspan="2">Informacion Adicional</th>
-            </tr>
+        <table class="BordesTablasAdi">
+            <thead>
+                <tr>
+                    <th colspan="2">Información Adicional</th>
+                </tr>
+            </thead>
             <tbody>
                 {{#each datosinfoadicional}}
                 <tr>
-                    <td class="Descripcion1Adi">{{this.campo}}</td>
-                    <td class="DatosAdi">{{this.valorcampo}}</td>
+                    <td class="lbl-adi">{{this.campo}}</td>
+                    <td>{{this.valorcampo}}</td>
                 </tr>
                 {{/each}}
             </tbody>
@@ -359,12 +400,14 @@
     </div>
 
     <div class="col-derecha">
-        <table id="tblSubtotales" border="0" cellspacing="0" cellpadding="0">
+        <table id="tblSubtotales">
             <tr>
-                <td>TOTAL RETENIDO:</td>
-                <td><span id="TOTALRETENIDO">{{totalRetenido}}</span></td>
+                <td>TOTAL RETENIDO</td>
+                <td>{{totalRetenido}}</td>
             </tr>
         </table>
     </div>
 </div>
+
 </body>
+</html>

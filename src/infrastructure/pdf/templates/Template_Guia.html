@@ -1,386 +1,465 @@
-<style>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Guía de Remisión Electrónica</title>
+    <style>
+        /* ── Layout A4 y Configuración General ── */
+        @page {
+            size: A4 portrait;
+            margin: 8mm;
+        }
+        * { 
+            box-sizing: border-box; 
+        }
+        
+        :root {
+            --primary-color: #1f4e79;
+            --border-color: #cbd5e1;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+        }
 
-    /* ── A4 layout ── */
-    @page {
-        size: A4 portrait;
-        margin: 8mm 8mm 8mm 8mm;
-    }
-    * { box-sizing: border-box; }
-    html, body {
-        width: 194mm;        /* A4 210mm - 2x8mm márgenes */
-        margin: 0;
-        padding: 0;
-        font-family: "Bookman L", Arial, sans-serif;
-        font-size: 8pt;
-        color: #222;
-    }
-    table {
-        table-layout: fixed;
-        width: 100%;
-        border-collapse: collapse;
-        word-wrap: break-word;
-        word-break: break-word;
-    }
-    img.barcode {
-        width: 100%;
-        height: 18mm;
-        display: block;
-        object-fit: fill;
-    }
+        html, body {
+            width: 194mm; /* A4 210mm - 2x8mm márgenes */
+            margin: 0;
+            padding: 0;
+            font-family: "Bookman L", Arial, sans-serif;
+            font-size: 8pt;
+            color: var(--text-dark);
+            line-height: 1.3;
+        }
 
-    html, body, h1, h2, h3, h4, h5, h6 {
-        font-family: "Bookman L", Arial, sans-serif;
-    }
-    h1 { font-size: 11pt; margin: 1.5mm 0; }
-    h2 { font-size: 9.5pt; margin: 1.5mm 0; color: #1f4e79; }
+        h1 { font-size: 11pt; margin: 1.5mm 0; }
+        h2 { font-size: 9.5pt; margin: 1.5mm 0; color: var(--primary-color); }
 
-    .Descripcion1 {
-        font-weight: bold;
-    }
+        /* Estructuras de Contenedores con Bordes (Estilo RIDE) */
+        .bloque-bordeado {
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 3.5mm;
+            margin-bottom: 3mm;
+            background-color: #ffffff;
+        }
 
-    .BordesTablas {
-        border: 1.5px solid #1f4e79;
-        border-radius: 6px;
-        -moz-border-radius: 6px;
-        border-collapse: collapse;
-    }
+        /* ── Cabecera: Logo, Emisor y Autorización SRI ── */
+        .cabecera-root {
+            display: flex;
+            gap: 4mm;
+            width: 100%;
+            margin-bottom: 3mm;
+        }
+        
+        .cab-izquierda {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3mm;
+        }
 
-    .BordesTablasDetalle {
-        border: 1.5px solid #1f4e79;
-        border-collapse: collapse;
-    }
+        .cab-logo {
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            height: 28mm;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2mm;
+            background-color: #ffffff;
+        }
+        .cab-logo img {
+            max-width: 100%;
+            max-height: 24mm;
+            object-fit: contain;
+        }
+        .cab-logo .no-logo {
+            font-size: 7pt;
+            color: var(--text-muted);
+            text-align: center;
+        }
 
-    .BordesTablasDetalle th {
-        background-color: #1f4e79;
-        color: #ffffff;
-        font-size: 9px;
-        padding: 4px 5px;
-        text-align: center;
-        border: 1px solid #1f4e79;
-    }
+        .cab-emisor {
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 3mm;
+            background-color: #ffffff;
+            flex-grow: 1;
+        }
+        .cab-emisor h2 {
+            margin-top: 0;
+            margin-bottom: 2mm;
+            font-size: 10pt;
+            text-transform: uppercase;
+        }
+        
+        .fila-dato {
+            display: flex;
+            margin-bottom: 1.2mm;
+            font-size: 7.5pt;
+        }
+        .fila-dato .lbl {
+            font-weight: bold;
+            color: var(--primary-color);
+            width: 32mm;
+            flex-shrink: 0;
+        }
+        .fila-dato .val {
+            color: var(--text-dark);
+        }
 
-    .BordesTablasDetalle td {
-        font-size: 8.5px;
-        padding: 3px 5px;
-        border: 1px solid #c9d3dc;
-        word-wrap: break-word;
-        word-break: break-word;
-    }
+        .cab-autorizacion {
+            flex: 0 0 82mm;
+            width: 82mm;
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 4mm 3.5mm;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+        }
+        .cab-autorizacion h1 {
+            font-size: 11pt;
+            color: var(--primary-color);
+            margin: 0 0 2mm 0;
+            text-align: center;
+        }
+        .cab-autorizacion .tipo-doc {
+            font-size: 11pt;
+            font-weight: bold;
+            text-align: center;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+            margin-bottom: 3mm;
+        }
+        .cab-autorizacion .clave-label {
+            font-weight: bold;
+            text-align: center;
+            font-size: 7.5pt;
+            margin-top: 2.5mm;
+            color: var(--primary-color);
+        }
+        .cab-autorizacion .clave-texto {
+            font-size: 6pt;
+            text-align: center;
+            word-break: break-all;
+            color: var(--text-dark);
+            margin-top: 1mm;
+            font-family: monospace;
+        }
+        img.barcode {
+            width: 100%;
+            height: 11mm;
+            display: block;
+            object-fit: fill;
+            margin-top: 2mm;
+        }
 
-    .BordesTablasDetalle tr:nth-child(even) td {
-        background: #f7f9fb;
-    }
+        /* ── Información del Transportista ── */
+        .info-tabla {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .info-tabla td {
+            padding: 1.2mm 2mm;
+            font-size: 8pt;
+            vertical-align: top;
+        }
+        .info-tabla .lbl {
+            font-weight: bold;
+            color: var(--primary-color);
+            width: 48mm;
+        }
 
-    /* Tabla Info Adicional: ahora al 100% del ancho de página
-       (antes tenía width:750px, más ancho que la página de 194mm). */
-    .BordesTablasAdi {
-        border: 1.5px solid #1f4e79;
-        border-radius: 6px;
-        -moz-border-radius: 6px;
-        border-collapse: collapse;
-        width: 100%;
-        margin-top: 3mm;
-    }
+        /* Divider para separar secciones lógicas internas de una tabla */
+        .info-tabla tr.linea-sep td {
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 2mm;
+        }
+        .info-tabla tr.linea-sep + tr td {
+            padding-top: 2mm;
+        }
 
-    .BordesTablasAdi th {
-        background: #1f4e79;
-        color: #ffffff;
-        text-align: left;
-        padding: 4px 6px;
-        font-size: 8px;
-    }
+        .seccion-titulo {
+            font-size: 9pt;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 3.5mm 0 1.5mm 0;
+            text-transform: uppercase;
+            border-bottom: 1.5px solid var(--primary-color);
+            padding-bottom: 0.5mm;
+        }
 
-    .BordesTablasAdi td {
-        border: 1px solid #c9d3dc;
-        padding: 4px 6px;
-        font-size: 8.5px;
-        word-wrap: break-word;
-        white-space: pre-wrap;
-    }
+        /* ── Tabla de Detalles e Items ── */
+        .tabla-detalles-container {
+            margin-bottom: 4mm;
+        }
+        .BordesTablasDetalle {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .BordesTablasDetalle th {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            font-size: 8pt;
+            font-weight: bold;
+            padding: 2mm 1.5mm;
+            text-align: center;
+            border: 1px solid var(--primary-color);
+        }
+        .BordesTablasDetalle td {
+            font-size: 7.5pt;
+            padding: 1.8mm 1.5mm;
+            border: 1px solid var(--border-color);
+        }
+        .BordesTablasDetalle tr:nth-child(even) td {
+            background-color: var(--bg-light);
+        }
 
-    .Descripcion1Adi {
-        width: 36mm;
-        font-weight: bold;
-        background: #f7f9fb;
-    }
+        /* ── Bloque de Cierre (Información Extra y Firmas) ── */
+        .fila-totales {
+            display: flex;
+            align-items: flex-start;
+            gap: 4mm;
+            width: 194mm;
+            margin-top: 2mm;
+            page-break-inside: avoid;
+        }
+        .col-izquierda {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3mm;
+        }
+        .col-derecha {
+            flex: 0 0 85mm;
+            width: 85mm;
+            display: flex;
+            flex-direction: column;
+            gap: 4mm;
+        }
 
-    .DatosAdi {
-        width: auto;
-    }
+        /* Información Adicional */
+        .BordesTablasAdi {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--primary-color);
+        }
+        .BordesTablasAdi th {
+            background: var(--primary-color);
+            color: #ffffff;
+            text-align: left;
+            padding: 1.5mm 2.5mm;
+            font-size: 7.5pt;
+        }
+        .BordesTablasAdi td {
+            border: 1px solid var(--border-color);
+            padding: 1.5mm 2.5mm;
+            font-size: 7.5pt;
+        }
+        .BordesTablasAdi td.lbl-adi {
+            font-weight: bold;
+            background-color: var(--bg-light);
+            width: 30mm;
+        }
 
-    .firmas {
-        margin-top: 18mm;
-    }
-    .firmas td {
-        padding-top: 4mm;
-        border-top: 1px solid #222;
-        text-align: center;
-        font-weight: bold;
-    }
-</style>
+        /* Sección de Firmas */
+        .firmas-container {
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 4mm 3mm;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            gap: 6mm;
+            height: 100%;
+        }
+        .firma-bloque {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            text-align: center;
+            height: 18mm;
+        }
+        .firma-linea {
+            width: 80%;
+            border-top: 1px solid var(--text-dark);
+            margin-bottom: 1mm;
+        }
+        .firma-texto {
+            font-size: 7.5pt;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+<body>
 
-<table border="0" cellspacing="2">
-    <tr>
-        <td>
-            <img width="490" height="180" alt="No existe imagen en doc/img/ " src="img/LogoPromariscoNuevaPescanova.jpg" />
-        </td>
-        <td rowspan="2" width="580" class="BordesTablas">
-            <table border="0" width="100%">
-                <tr>
-                    <td colspan="2"><h1 align="center">R.U.C: {{ruc}}</h1></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><h1 class="Descripcion1" align="center">GUIA DE REMISION</h1></td>
-                </tr>
-                <tr>
-                    <td width="28%">
-                        &nbsp;&nbsp;<span class="Descripcion1">No</span>
-                    </td>
-                    <td>
-                        <span id="estab">{{estab}}</span>-<span id="ptoEmi">{{ptoEmi}}</span>-<span id="secuencial">{{secuencial}}</span> &emsp;
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Numero de <br>&nbsp;&nbsp;Autorizacion</span>
-                    </td>
-                    <td>
-                        <span id="autorizacionoffline">{{claveAcceso}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Ambiente:</span>
-                    </td>
-                    <td>
-                        <span id="ambiente">{{ambiente}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Emision:</span>
-                    </td>
-                    <td>
-                        <span id="emision">{{tipoEmision}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <center>
-                            <span class="Descripcion1">Clave de Acceso</span>
-                            <img class="barcode" src="{{barcodeImg}}" alt="Código de barras" />
-                        </center>
-                    </td>
-                </tr>
+<div class="cabecera-root">
+    <div class="cab-izquierda">
+        <div class="cab-logo">
+            <img class="logo-img" src="img/LogoPromariscoNuevaPescanova.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" alt="Logo" />
+            <span class="no-logo" style="display:none;">NO TIENE LOGO</span>
+        </div>
 
-                <tr>
-                    <td colspan="2" align="center">
-                        <span id="claveAccesop">{{claveAcceso}}</span>
-                    </td>
-                </tr>
-            </table>
-        </td>
+        <div class="cab-emisor">
+            <h2>{{razonSocial}}</h2>
+            <div class="fila-dato"><span class="lbl">Dirección Matriz:</span><span class="val">{{dirMatriz}}</span></div>
+            <div class="fila-dato"><span class="lbl">Dirección Sucursal:</span><span class="val">{{dirEstablecimiento}}</span></div>
+            <div class="fila-dato"><span class="lbl">Contribuyente Esp. No:</span><span class="val">{{contribuyenteEspecial}}</span></div>
+            <div class="fila-dato"><span class="lbl">Obligado a llevar contabilidad:</span><span class="val">{{obligadoContabilidad}}</span></div>
+            
+            {{#if cadenaAgenteRetencion}}
+                <div class="fila-dato" style="color: var(--primary-color); font-weight: bold; margin-top: 1mm;">
+                    <span class="lbl" style="width: 100%;">{{cadenaAgenteRetencion}}</span>
+                </div>
+            {{/if}}
+            {{#if contribuyenteRimpe}}
+                <div class="fila-dato" style="color: var(--primary-color); font-weight: bold;">
+                    <span class="lbl" style="width: 100%;">{{contribuyenteRimpe}}</span>
+                </div>
+            {{/if}}
+        </div>
+    </div>
 
-    <tr>
-        <td class="BordesTablas">
-            <table border="0" width="100%">
-                <tr>
-                    <td colspan="2">
-                        <h2 align="center" class="Descripcion1" id="razonSocial">{{razonSocial}} </h2>
-                    </td>
-                </tr>
+    <div class="cab-autorizacion">
+        <h1>R.U.C: {{ruc}}</h1>
+        <div class="tipo-doc">GUÍA DE REMISIÓN</div>
+        <div class="fila-dato"><span class="lbl" style="width:20mm;">No:</span><span class="val">{{estab}}-{{ptoEmi}}-{{secuencial}}</span></div>
+        <div class="fila-dato"><span class="lbl" style="width:28mm;">Nro. Autorización:</span><span class="val" style="word-break:break-all">{{claveAcceso}}</span></div>
+        <div class="fila-dato"><span class="lbl" style="width:28mm;">Fecha Autorización:</span><span class="val">{{fechaEmision}}</span></div>
+        <div class="fila-dato"><span class="lbl" style="width:20mm;">Ambiente:</span><span class="val">{{ambiente}}</span></div>
+        <div class="fila-dato"><span class="lbl" style="width:20mm;">Emisión:</span><span class="val">{{tipoEmision}}</span></div>
+        
+        <div class="clave-label">Clave de Acceso</div>
+        <img class="barcode" src="{{barcodeImg}}" alt="Código de barras" />
+        <div class="clave-texto">{{claveAcceso}}</div>
+    </div>
+</div>
 
-                <tr>
-                    <td width="50%">
-                        &nbsp;&nbsp;<span class="Descripcion1">Direccion <br>&nbsp;&nbsp;Matriz:</span>
-                    </td>
-                    <td>
-                        <span id="dirMatriz">{{dirMatriz}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Direccion <br>&nbsp;&nbsp;Sucursal:</span>
-                    </td>
-                    <td>
-                        <span id="dirEstablecimiento">{{dirEstablecimiento}}</span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Contribuyente especial Nro.:</span>
-                    </td>
-                    <td>
-                        <span id="contribuyenteEspecial">{{contribuyenteEspecial}}</span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Obligado a llevar contabilidad:</span>
-                    </td>
-                    <td>
-                        <span id="obligadoContabilidad">{{obligadoContabilidad}}</span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td colspan="2" align="center">
-                        &nbsp;&nbsp;<span class="Descripcion1">{{cadenaAgenteRetencion}}</span>
-                        <br>&nbsp;&nbsp;<span class="Descripcion1">{{contribuyenteRimpe}}</span>
-                    </td>
-                </tr>
-
-            </table>
-        </td>
-    </tr>
-
-</table>
-
-<table border="0">
-    <tr>
-        <td>
-            <table border="0" cellspacing="1" class="BordesTablas">
-                <tr>
-                    <td width="35%">
-                        &nbsp;&nbsp;<span class="Descripcion1">Identificacion(Transportista):</span>
-                    </td>
-                    <td colspan="3">
-                        <span id="rucTransportista">{{rucTransportista}}</span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Razon Social / Nombres y Apellidos:   </span>
-                    </td>
-                    <td>
-                        <span id="razonSocialTransportista">{{razonSocialTransportista}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Placa:</span>
-                    </td>
-                    <td>
-                        <span id="placa">{{placa}}</span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Punto de Partida:</span>
-                    </td>
-                    <td>
-                        <span id="dirPartida">{{dirPartida}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Fecha inicio Transporte:</span>
-                    </td>
-                    <td>
-                        <span id="fechaIniTransporte">{{fechaIniTransporte}}</span>
-                    </td>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Fecha fin Transporte:</span>
-                    </td>
-                    <td>
-                        <span id="fechaFinTransporte">{{fechaFinTransporte}}</span>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <table border="0" cellspacing="1" class="BordesTablas">
-
-                <tr>
-                    <td width="35%">
-                        &nbsp;&nbsp;<span class="Descripcion1">Motivo Traslado:</span>
-                    </td>
-                    <td>
-                        <span id="motivoTraslado">{{motivoTraslado}}</span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Destino(Punto de llegada):</span>
-                    </td>
-                    <td>
-                        <span id="dirDestinatario">{{dirDestinatario}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Identificacion (Destinatario):</span>
-                    </td>
-                    <td>
-                        <span id="identificacionDestinatario">{{identificacionDestinatario}}</span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        &nbsp;&nbsp;<span class="Descripcion1">Razon Social/Nombres Apellidos:</span>
-                    </td>
-                    <td>
-                        <span id="razonSocialDestinatario">{{razonSocialDestinatario}}</span>
-                    </td>
-                </tr>
-
-            </table>
-        </td>
-    </tr>
-</table>
-<br>
-
-<table align='left' border='1' cellspacing='0' class="BordesTablasDetalle">
-    <thead>
+<div class="bloque-bordeado">
+    <table class="info-tabla">
         <tr>
-            <th>Cód. Item</th>
-            <th>Cód. Aux</th>
-            <th>Descripcion</th>
-            <th width="115">Cantidad</th>
+            <td class="lbl">Razón Social / Nombres:</td>
+            <td>{{razonSocialTransportista}}</td>
+            <td class="lbl" style="width:25mm;">Identificación:</td>
+            <td style="width:30mm;">{{rucTransportista}}</td>
         </tr>
-    </thead>
-    <tbody>
-        {{#each detalles}}
         <tr>
-            <td align="center">{{this.item}}</td>
-            <td align="center">{{this.codigoaux}}</td>
-            <td align="left">{{this.description}}</td>
-            <td align="right">{{this.quantity}}</td>
+            <td class="lbl">Placa:</td>
+            <td>{{placa}}</td>
+            <td class="lbl">Fecha Inicio Transp.:</td>
+            <td>{{fechaIniTransporte}}</td>
         </tr>
-        {{/each}}
-    </tbody>
-</table>
-
-<table class="BordesTablasAdi" border="0" cellspacing="0">
-    <tr>
-        <th colspan="2">Informacion Adicional</th>
-    </tr>
-    <tbody>
-        {{#each datosinfoadicional}}
         <tr>
-            <td class="Descripcion1Adi">{{this.campo}}</td>
-            <td class="DatosAdi">{{this.valorcampo}}</td>
+            <td class="lbl">Punto de Partida:</td>
+            <td>{{dirPartida}}</td>
+            <td class="lbl">Fecha Fin Transp.:</td>
+            <td>{{fechaFinTransporte}}</td>
         </tr>
-        {{/each}}
-    </tbody>
-</table>
+    </table>
+</div>
 
-<table class="firmas" border="0">
-    <tr>
-        <td width="50%">&nbsp;</td>
-        <td width="50%">&nbsp;</td>
-    </tr>
-    <tr>
-        <td align="center">Elaborado</td>
-        <td align="center">Aprobado</td>
-    </tr>
-</table>
+<div class="seccion-titulo">Destinatario y Envío</div>
+<div class="bloque-bordeado">
+    <table class="info-tabla">
+        <tr class="linea-sep">
+            <td class="lbl">Comprobante que se Modifica:</td>
+            <td>{{codDocSustento}} - {{numDocSustento}}</td>
+            <td class="lbl" style="width:30mm;">Fecha Autorización Sust.:</td>
+            <td style="width:30mm;">{{fechaAutorizacionDocSustento}}</td>
+        </tr>
+        <tr>
+            <td class="lbl">Destinatario (Razón Social):</td>
+            <td>{{razonSocialDestinatario}}</td>
+            <td class="lbl">Identificación Dest.:</td>
+            <td>{{identificacionDestinatario}}</td>
+        </tr>
+        <tr>
+            <td class="lbl">Motivo Traslado:</td>
+            <td>{{motivoTraslado}}</td>
+            <td class="lbl">Ruta:</td>
+            <td>{{ruta}}</td>
+        </tr>
+        <tr>
+            <td class="lbl">Punto de Llegada:</td>
+            <td>{{dirDestinatario}}</td>
+            <td class="lbl">Documento Aduanero:</td>
+            <td>{{docAduaneroUnico}}</td>
+        </tr>
+        <tr>
+            <td class="lbl">Código Establecimiento Dest.:</td>
+            <td colspan="3">{{codEstabDestino}}</td>
+        </tr>
+    </table>
+</div>
+
+<div class="seccion-titulo">Detalle de Mercancía</div>
+<div class="tabla-detalles-container">
+    <table class="BordesTablasDetalle">
+        <colgroup>
+            <col style="width:15%">
+            <col style="width:15%">
+            <col style="width:55%">
+            <col style="width:15%">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Cód. Item</th>
+                <th>Cód. Auxiliar</th>
+                <th style="text-align: left;">Descripción</th>
+                <th style="text-align: right;">Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each detalles}}
+            <tr>
+                <td style="text-align: center;">{{this.item}}</td>
+                <td style="text-align: center;">{{this.codigoaux}}</td>
+                <td>{{this.description}}</td>
+                <td style="text-align: right; font-weight: bold;">{{this.quantity}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<div class="fila-totales">
+    <div class="col-izquierda">
+        <table class="BordesTablasAdi">
+            <thead>
+                <tr>
+                    <th colspan="2">Información Adicional</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each datosinfoadicional}}
+                <tr>
+                    <td class="lbl-adi">{{this.campo}}</td>
+                    <td>{{this.valorcampo}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-derecha">
+        <div class="firmas-container">
+            <div class="firma-bloque">
+                <div class="firma-linea"></div>
+                <div class="firma-texto">Firma del Transportista</div>
+            </div>
+            <div class="firma-bloque">
+                <div class="firma-linea"></div>
+                <div class="firma-texto">Firma del Destinatario / Recibido</div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
+</html>
