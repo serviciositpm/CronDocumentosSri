@@ -116,11 +116,13 @@ export class XmlToInvoiceParser implements IInvoiceParser {
           valorimpuesto += parseFloat(imp.valor[0]);
         }
       }
-      let detinfoadicional = 'S/I';
+      let detinfoadicional = '';
       if (det.detallesAdicionales?.[0]?.detAdicional) {
+        const partes: string[] = [];
         for (const add of det.detallesAdicionales[0].detAdicional) {
-          detinfoadicional += `${add.$.nombre} => ${add.$.valor} `;
+          partes.push(`${add.$.nombre}: ${add.$.valor}`);
         }
+        detinfoadicional = partes.join(' | ');
       }
       detalles.push({
         item: codigoPrincipal,

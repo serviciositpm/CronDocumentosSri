@@ -1,65 +1,174 @@
 <style>
-    @font-face {
-        font-family: 'Code39AzaleaRegular1';
-        src: local('Code39Azalea'), local('Code39AzaleaRegular1');
+
+    /* ── A4 layout ── */
+    @page {
+        size: A4 portrait;
+        margin: 8mm 8mm 8mm 8mm;
     }
+    * { box-sizing: border-box; }
+    html, body {
+        width: 194mm;        /* A4 210mm - 2x8mm márgenes */
+        margin: 0;
+        padding: 0;
+        font-family: "Bookman L", Arial, sans-serif;
+        font-size: 8pt;
+        color: #222;
+    }
+    table {
+        table-layout: fixed;
+        width: 100%;
+        border-collapse: collapse;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+    img.barcode {
+        width: 100%;
+        height: 18mm;
+        display: block;
+        object-fit: fill;
+    }
+
     html, body, h1, h2, h3, h4, h5, h6 {
-        font-family: "Bookman L", bold, sans-serif;
+        font-family: "Bookman L", Arial, sans-serif;
     }
+    h1 { font-size: 11pt; margin: 1.5mm 0; }
+    h2 { font-size: 9.5pt; margin: 1.5mm 0; color: #1f4e79; }
 
     .Descripcion1 {
         font-weight: bold;
     }
 
     .BordesTablas {
-        border: 2px solid;
-        border-radius: 6px;
-        -moz-border-radius: 6px;
-        border-collapse: separate;
-    }
-    .BordesTablasDetalle {
-        border: 2px solid;
-        border-collapse: separate;
-    }
-
-    /* Faltaban en tu versión: las necesita la tabla de Informacion Adicional
-       (igual que en Template_Factura.html y Template_Nd.html) */
-    .BordesTablasAdi {
-        border: 2px solid;
+        border: 1.5px solid #1f4e79;
         border-radius: 6px;
         -moz-border-radius: 6px;
         border-collapse: collapse;
-        width: 750px;
+    }
+    .BordesTablasDetalle {
+        border: 1.5px solid #1f4e79;
+        border-collapse: collapse;
     }
 
-    .BordesTablasAdi th, .BordesTablasAdi td {
-        border: 1px solid black;
-        padding: 8px;
+    .BordesTablasDetalle th {
+        background-color: #1f4e79;
+        color: #ffffff;
+        font-size: 9px;
+        padding: 4px 5px;
+        text-align: center;
+        border: 1px solid #1f4e79;
+    }
+
+    .BordesTablasDetalle td {
+        font-size: 8.5px;
+        padding: 3px 5px;
+        border: 1px solid #c9d3dc;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+
+    .BordesTablasDetalle tr:nth-child(even) td {
+        background: #f7f9fb;
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       Bloque inferior: Informacion Adicional (izquierda, flexible)
+       + Totales (derecha, ancho fijo). Totales SIEMPRE a la derecha
+       y NUNCA excede el ancho de página (194mm) — a diferencia del
+       diseño anterior que hacía overflow fuera de la página.
+       ───────────────────────────────────────────────────────── */
+    .fila-totales {
+        display: flex;
+        align-items: flex-start;
+        gap: 5mm;
+        width: 194mm;
+        margin-top: 4mm;
+        page-break-inside: avoid;
+    }
+    .col-izquierda {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+    .col-derecha {
+        flex: 0 0 72mm;
+        width: 72mm;
+    }
+
+    /* Tabla Info Adicional */
+    .BordesTablasAdi {
+        border: 1.5px solid #1f4e79;
+        border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .BordesTablasAdi th {
+        background: #1f4e79;
+        color: #ffffff;
+        text-align: left;
+        padding: 4px 6px;
+        font-size: 8px;
     }
 
     .BordesTablasAdi td {
+        border: 1px solid #c9d3dc;
+        padding: 4px 6px;
+        font-size: 8.5px;
         word-wrap: break-word;
         white-space: pre-wrap;
     }
 
     .Descripcion1Adi {
-        width: 195px;
+        width: 36mm;
         font-weight: bold;
+        background: #f7f9fb;
     }
 
     .DatosAdi {
-        width: 500px;
+        width: auto;
+    }
+
+    #tblSubtotales {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        border: 1.5px solid #1f4e79;
+        border-radius: 6px;
+    }
+    #tblSubtotales td {
+        padding: 2.2mm 2mm;
+        font-size: 8.5px;
+        border-bottom: 1px solid #e3e8ee;
+    }
+    #tblSubtotales td:first-child {
+        text-align: left;
+        width: 62%;
+    }
+    #tblSubtotales td:last-child {
+        text-align: right;
+        width: 38%;
+        white-space: nowrap;
+    }
+    #tblSubtotales tr:nth-child(even) td {
+        background: #f5f8fb;
+    }
+    #tblSubtotales tr:last-child td {
+        background: #1f4e79;
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 9.5px;
+        border-bottom: none;
     }
 </style>
 
 
-<table border="0" width="1160">
+<table border="0">
     <tr>
         <td>
             <img width="490" height="180" alt="No existe imagen en doc/img/ " src="img/LogoPromariscoNuevaPescanova.jpg" />
         </td>
         <td rowspan="2" class="BordesTablas">
-            <table border="0" height="100%" width="100%">
+            <table border="0" width="100%">
                 <tr>
                     <td colspan="2"><h1 align="center">R.U.C: {{ruc}}</h1></td>
                 </tr>
@@ -111,7 +220,7 @@
                     <td colspan="2">
                         <center>
                             <span class="Descripcion1">Clave de Acceso</span>
-                            <span id="claveAcceso" style="font-family:'Code39AzaleaRegular1'; font-size:40px; display:block; width:100%; letter-spacing:0; white-space:nowrap;"><br>*{{claveAcceso}}*</span>
+                            <img class="barcode" src="{{barcodeImg}}" alt="Código de barras" />
                         </center>
                     </td>
                 </tr>
@@ -126,7 +235,7 @@
 
     <tr>
         <td class="BordesTablas">
-            <table border="0" height="100%" width="100%">
+            <table border="0" width="100%">
 
                 <tr>
                     <td colspan="2">
@@ -187,7 +296,7 @@
 </table>
 
 
-<table border="0" width="1160" cellspacing="1" class="BordesTablas">
+<table border="0" cellspacing="1" class="BordesTablas">
     <tr>
         <td width="190">
             &nbsp;&nbsp;<span class="Descripcion1">Razon Social / Nombres y Apellidos:</span>
@@ -255,7 +364,7 @@
 </table>
 
 
-<table align='left' border='1' width='1159' cellspacing='0' class="BordesTablasDetalle">
+<table align='left' border='1' cellspacing='0' class="BordesTablasDetalle">
     <thead>
         <tr>
             <th>Cód. Item</th>
@@ -282,158 +391,78 @@
     </tbody>
 </table>
 
+<div class="fila-totales">
+    <div class="col-izquierda">
+        <table class="BordesTablasAdi" border="0" cellspacing="0">
+            <tr>
+                <th colspan="2">Informacion Adicional</th>
+            </tr>
+            <tbody>
+                {{#each datosinfoadicional}}
+                <tr>
+                    <td class="Descripcion1Adi">{{this.campo}}</td>
+                    <td class="DatosAdi">{{this.valorcampo}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
 
-<table id="ColSub" width="1160">
-    <tr>
-        <td style="width: 750px;">
-            <table align='left' border='0' cellspacing='3' class="BordesTablasAdi">
-                <tr>
-                    <th colspan="2">Informacion Adicional</th>
-                </tr>
-                <tbody>
-                    {{#each datosinfoadicional}}
-                    <tr>
-                        <td class="Descripcion1Adi">{{this.campo}}</td>
-                        <td class="DatosAdi">{{this.valorcampo}}</td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-        </td>
-        <th rowspan="1" valign="top">
-            <table border="1" id="tblSubtotales" class="BordesTablas" align="right" cellspacing="0" cellpadding="1" width="390">
-                <tr>
-                    <td style="width:250px;">
-                        <span class="Descripcion1">SUBTOTAL 12%</span>
-                    </td>
-                    <td align="right" style="width:105px;">
-                        <span id="SUBTOTAL12P">{{baseImponible12}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:250px;">
-                        <span class="Descripcion1">SUBTOTAL 15%</span>
-                    </td>
-                    <td align="right" style="width:105px;">
-                        <span id="SUBTOTAL15P">{{baseImponible15}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:250px;">
-                        <span class="Descripcion1">SUBTOTAL 5%</span>
-                    </td>
-                    <td align="right" style="width:105px;">
-                        <span id="SUBTOTAL5P">{{baseImponible5}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="Descripcion1">SUBTOTAL IVA 0%</span>
-                    </td>
-                    <td align="right">
-                        <span id="SUBTOTAL0P">{{baseImponible0}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="Descripcion1">SUBTOTAL NO OBJETO DE IVA </span>
-                    </td>
-                    <td align="right">
-                        <span id="SUBTOTALNOOBJETODEIVA">{{noobjetoiva}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="Descripcion1">SUBTOTAL EXENTO DE IVA</span>
-                    </td>
-                    <td align="right">
-                        <span id="SUBTOTALEXENTODEIVA">{{excentoiva}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="Descripcion1">SUBTOTAL SIN IMPUESTOS</span>
-                    </td>
-                    <td align="right">
-                        <span id="SUBTOTALSINIMPUESTOS">{{totalSinImpuestos}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="Descripcion1">ICE</span>
-                    </td>
-                    <td align="right">
-                        <span id="ICE">{{ice}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="Descripcion1">IVA 12%</span>
-                    </td>
-                    <td align="right">
-                        <span id="IVA12P">{{valorIva12}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="Descripcion1">IVA 15%</span>
-                    </td>
-                    <td align="right">
-                        <span id="IVA15P">{{valorIva15}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="Descripcion1">IVA 5%</span>
-                    </td>
-                    <td align="right">
-                        <span id="IVA5P">{{valorIva5}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="Descripcion1">IRBPNR</span>
-                    </td>
-                    <td align="right">
-                        <span id="IRBPNR">{{irbpnr}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="Descripcion1">VALOR TOTAL</span>
-                    </td>
-                    <td align="right">
-                        <span id="VALORTOTAL">{{valorModificacion}}</span>
-                    </td>
-                </tr>
-
-            </table>
-        </th>
-    </tr>
-</table>
-<script>
-// Estira el código de barras para que ocupe exactamente el ancho del td
-(function() {
-  function ajustarBarcode() {
-    var spans = document.querySelectorAll("#claveAcceso");
-    spans.forEach(function(span) {
-      var td = span.closest("td") || span.parentElement;
-      var maxW = td.offsetWidth - 10;
-      var curW = span.scrollWidth;
-      if (curW > 0 && maxW > 0) {
-        var scale = maxW / curW;
-        span.style.transform = "scaleX(" + scale + ")";
-        span.style.transformOrigin = "left center";
-        span.style.display = "block";
-      }
-    });
-  }
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", ajustarBarcode);
-  } else {
-    ajustarBarcode();
-  }
-  window.addEventListener("load", ajustarBarcode);
-})();
-</script>
+    <div class="col-derecha">
+        <table id="tblSubtotales" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td><span class="Descripcion1">SUBTOTAL 12%</span></td>
+                <td><span id="SUBTOTAL12P">{{baseImponible12}}</span></td>
+            </tr>
+            <tr>
+                <td><span class="Descripcion1">SUBTOTAL 15%</span></td>
+                <td><span id="SUBTOTAL15P">{{baseImponible15}}</span></td>
+            </tr>
+            <tr>
+                <td><span class="Descripcion1">SUBTOTAL 5%</span></td>
+                <td><span id="SUBTOTAL5P">{{baseImponible5}}</span></td>
+            </tr>
+            <tr>
+                <td><span class="Descripcion1">SUBTOTAL IVA 0%</span></td>
+                <td><span id="SUBTOTAL0P">{{baseImponible0}}</span></td>
+            </tr>
+            <tr>
+                <td><span class="Descripcion1">SUBTOTAL NO OBJETO DE IVA</span></td>
+                <td><span id="SUBTOTALNOOBJETODEIVA">{{noobjetoiva}}</span></td>
+            </tr>
+            <tr>
+                <td><span class="Descripcion1">SUBTOTAL EXENTO DE IVA</span></td>
+                <td><span id="SUBTOTALEXENTODEIVA">{{excentoiva}}</span></td>
+            </tr>
+            <tr>
+                <td><span class="Descripcion1">SUBTOTAL SIN IMPUESTOS</span></td>
+                <td><span id="SUBTOTALSINIMPUESTOS">{{totalSinImpuestos}}</span></td>
+            </tr>
+            <tr>
+                <td><span class="Descripcion1">ICE</span></td>
+                <td><span id="ICE">{{ice}}</span></td>
+            </tr>
+            <tr>
+                <td><span class="Descripcion1">IVA 12%</span></td>
+                <td><span id="IVA12P">{{valorIva12}}</span></td>
+            </tr>
+            <tr>
+                <td><span class="Descripcion1">IVA 15%</span></td>
+                <td><span id="IVA15P">{{valorIva15}}</span></td>
+            </tr>
+            <tr>
+                <td><span class="Descripcion1">IVA 5%</span></td>
+                <td><span id="IVA5P">{{valorIva5}}</span></td>
+            </tr>
+            <tr>
+                <td><span class="Descripcion1">IRBPNR</span></td>
+                <td><span id="IRBPNR">{{irbpnr}}</span></td>
+            </tr>
+            <tr>
+                <td><span class="Descripcion1">VALOR TOTAL</span></td>
+                <td><span id="VALORTOTAL">{{valorModificacion}}</span></td>
+            </tr>
+        </table>
+    </div>
+</div>
 </body>
