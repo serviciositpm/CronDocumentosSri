@@ -11,15 +11,17 @@ export interface DetalleFactura {
     detinfoadicional: string;
 }
 export interface Reembolso {
-    documentreem: string;
-    identificationreem: string;
-    issuedatereem: string;
-    subiva15reem: number;
-    subiva5reem: number;
-    sub0reem: number;
-    iva15reem: number;
-    iva5reem: number;
-    totalreem: number;
+  // Campos de identificación del documento de reembolso
+  codDocReembolso:                  string;
+  identificacionProveedorReembolso: string;
+  estabReembolso:                   string;
+  ptoEmiReembolso:                  string;
+  secuencialReembolso:              string;
+  fechaEmisionReembolso:            string;
+  // Campos de impuestos — nombres exactos que usa Template_Factura_Reembolsos.html
+  reembolsoBaseImponible0:          string;  // Base imponible 0%, no objeto, exento
+  reembolsoBaseImponibleGrabada:    string;  // Base imponible gravada (15%, 12%, 5%, 8%)
+  reembolsoIvaLiquidado:            string;  // IVA del reembolso
 }
 export class Factura {
   constructor(

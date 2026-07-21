@@ -139,15 +139,69 @@ export class XmlToInvoiceParser implements IInvoiceParser {
     }
 
     // Reembolsos
+    // El XML de una factura de reembolso (codDocReembolso='41') trae:
+    // <reembolsos>
+    //   <reembolsoDetalle>
+    //     <tipoProveedorReembolso>      → tipo de proveedor
+    //     <paisPagoProveedorReembolso>  → país de pago
+    //     <aplicaRetConvDobTrib>        → aplica retención
+    //     <pagoRegFis>                  → pago régimen fiscal
+    //     <codDocReembolso>             → tipo de documento
+    //     <establDocReembolso>          → establecimiento
+    //     <emisionDocReembolso>         → punto de emisión
+    //     <secuencialDocReembolso>      → secuencial
+    //     <fechaEmisionDocReembolso>    → fecha de emisión
+    //     <numeroautorizacionDocReemb>  → nro. autorización
+    //     <identificacionProveedorReembolso> → RUC/CI del proveedor
+    //     <detalleImpuestos>
+    //       <detalleImpuesto>
+    //         <codigo>2</codigo>
+    //         <codigoPorcentaje>0|4|...</codigoPorcentaje>
+    //         <baseImponibleReembolso>
+    //         <impuestoReembolso>
     const reembolsos: Reembolso[] = [];
     if (codDocReembolso === '41' && facturaNode.reembolsos?.[0]?.reembolsoDetalle) {
       for (const reem of facturaNode.reembolsos[0].reembolsoDetalle) {
-        // parse reembolso similar al original (simplificado)
+        // Campos de identificación del documento
+        const codDocReem     = reem.codDocReembolso?.[0] || '';
+        const estabReem      = reem.establDocReembolso?.[0] || reem.estabDocReembolso?.[0] || '';
+        const ptoEmiReem     = reem.emisionDocReembolso?.[0] || reem.ptoEmiDocReembolso?.[0] || '';
+        const secuencialReem = reem.secuencialDocReembolso?.[0] || '';
+        const fechaReem      = reem.fechaEmisionDocReembolso?.[0] || '';
+        const identificacion = reem.identificacionProveedorReembolso?.[0] || '';
+
+        // Impuestos del reembolso
+        let baseImponible0Reem    = 0;
+        let baseImponibleGravReem = 0;
+        let ivaLiquidadoReem      = 0;
+
+        const detalleImpuestos = reem.detalleImpuestos?.[0]?.detalleImpuesto;
+        if (detalleImpuestos) {
+          for (const imp of detalleImpuestos) {
+            const codPorcentaje = imp.codigoPorcentaje?.[0] || '0';
+            const base  = parseFloat(imp.baseImponibleReembolso?.[0] || '0');
+            const valor = parseFloat(imp.impuestoReembolso?.[0] || '0');
+
+            if (codPorcentaje === '0' || codPorcentaje === '6' || codPorcentaje === '7') {
+              baseImponible0Reem += base;           // base 0%, no objeto, exento
+            } else {
+              baseImponibleGravReem += base;        // base gravada (15%, 12%, 5%, 8%)
+              ivaLiquidadoReem      += valor;       // IVA del reembolso
+            }
+          }
+        }
+
         reembolsos.push({
-          documentreem: `${reem.estabDocReembolso[0]}-${reem.ptoEmiDocReembolso[0]}-${reem.secuencialDocReembolso[0]}`,
-          identificationreem: reem.identificacionProveedorReembolso?.[0] || '',
-          issuedatereem: reem.fechaEmisionDocReembolso[0],
-          subiva15reem: 0, subiva5reem: 0, sub0reem: 0, iva15reem: 0, iva5reem: 0, totalreem: 0
+          // Nombres que usa la plantilla Template_Factura_Reembolsos.html
+          codDocReembolso:                codDocReem,
+          identificacionProveedorReembolso: identificacion,
+          estabReembolso:                 estabReem,
+          ptoEmiReembolso:                ptoEmiReem,
+          secuencialReembolso:            secuencialReem,
+          fechaEmisionReembolso:          fechaReem,
+          reembolsoBaseImponible0:        baseImponible0Reem.toFixed(2),
+          reembolsoBaseImponibleGrabada:  baseImponibleGravReem.toFixed(2),
+          reembolsoIvaLiquidado:          ivaLiquidadoReem.toFixed(2),
         });
       }
     }
