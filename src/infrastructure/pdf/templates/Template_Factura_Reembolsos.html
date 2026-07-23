@@ -28,19 +28,28 @@
             font-family: "Bookman L", Arial, sans-serif;
             font-size: 8pt;
             color: var(--text-dark);
-            line-height: 1.3;
+            line-height: 1.25;
         }
 
         h1 { font-size: 11pt; margin: 1.5mm 0; }
         h2 { font-size: 9.5pt; margin: 1.5mm 0; color: var(--primary-color); }
 
+        table {
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: collapse;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
         /* Estructuras de Contenedores con Bordes (Estilo RIDE) */
         .bloque-bordeado {
             border: 1px solid var(--primary-color);
             border-radius: 6px;
-            padding: 3.5mm;
+            padding: 3mm;
             margin-bottom: 3mm;
             background-color: #ffffff;
+            width: 100%;
         }
 
         /* ── Cabecera ── */
@@ -56,6 +65,7 @@
             display: flex;
             flex-direction: column;
             gap: 3mm;
+            min-width: 0;
         }
 
         .cab-logo {
@@ -89,14 +99,14 @@
         .cab-emisor h2 {
             margin-top: 0;
             margin-bottom: 2mm;
-            font-size: 10pt;
+            font-size: 9.5pt;
             text-transform: uppercase;
         }
         
         .fila-dato {
             display: flex;
-            margin-bottom: 1.2mm;
-            font-size: 7.5pt;
+            margin-bottom: 1mm;
+            font-size: 7.2pt;
         }
         .fila-dato .lbl {
             font-weight: bold;
@@ -106,41 +116,42 @@
         }
         .fila-dato .val {
             color: var(--text-dark);
+            word-break: break-word;
         }
 
         .cab-autorizacion {
-            flex: 0 0 82mm;
-            width: 82mm;
+            flex: 0 0 80mm;
+            width: 80mm;
             border: 1px solid var(--primary-color);
             border-radius: 6px;
-            padding: 4mm 3.5mm;
+            padding: 3.5mm 3mm;
             background-color: #ffffff;
             display: flex;
             flex-direction: column;
         }
         .cab-autorizacion h1 {
-            font-size: 11pt;
+            font-size: 10.5pt;
             color: var(--primary-color);
-            margin: 0 0 2mm 0;
+            margin: 0 0 1.5mm 0;
             text-align: center;
         }
         .cab-autorizacion .tipo-doc {
-            font-size: 11pt;
+            font-size: 10.5pt;
             font-weight: bold;
             text-align: center;
             color: var(--primary-color);
             letter-spacing: 1px;
-            margin-bottom: 3mm;
+            margin-bottom: 2.5mm;
         }
         .cab-autorizacion .clave-label {
             font-weight: bold;
             text-align: center;
-            font-size: 7.5pt;
-            margin-top: 2.5mm;
+            font-size: 7.2pt;
+            margin-top: 2mm;
             color: var(--primary-color);
         }
         .cab-autorizacion .clave-texto {
-            font-size: 6pt;
+            font-size: 5.8pt;
             text-align: center;
             word-break: break-all;
             color: var(--text-dark);
@@ -149,34 +160,36 @@
         }
         img.barcode {
             width: 100%;
-            height: 11mm;
+            height: 10mm;
             display: block;
             object-fit: fill;
-            margin-top: 2mm;
+            margin-top: 1.5mm;
         }
 
         /* ── Información del Comprador ── */
         .info-comprador {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
         }
         .info-comprador td {
-            padding: 1.2mm 2mm;
-            font-size: 8pt;
+            padding: 1mm 1.5mm;
+            font-size: 7.5pt;
             vertical-align: top;
+            word-break: break-word;
         }
         .info-comprador .lbl {
             font-weight: bold;
             color: var(--primary-color);
-            width: 38mm;
+            width: 36mm;
         }
 
         /* ── Sección de Reembolsos e Items ── */
         .seccion-titulo {
-            font-size: 9pt;
+            font-size: 8.5pt;
             font-weight: bold;
             color: var(--primary-color);
-            margin: 3mm 0 1.5mm 0;
+            margin: 2.5mm 0 1.5mm 0;
             text-transform: uppercase;
             border-bottom: 1.5px solid var(--primary-color);
             padding-bottom: 0.5mm;
@@ -189,20 +202,24 @@
             border-radius: 6px;
             overflow: hidden;
             margin-bottom: 3mm;
+            table-layout: fixed;
         }
         .BordesTablasDetalle th {
             background-color: var(--primary-color);
             color: #ffffff;
-            font-size: 8pt;
+            font-size: 7pt;
             font-weight: bold;
-            padding: 1.8mm 1.5mm;
+            padding: 1.5mm 1mm;
             text-align: center;
             border: 1px solid var(--primary-color);
+            word-break: break-word;
         }
         .BordesTablasDetalle td {
-            font-size: 7.5pt;
-            padding: 1.5mm 1.5mm;
+            font-size: 6.8pt;
+            padding: 1.2mm 1mm;
             border: 1px solid var(--border-color);
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
         .BordesTablasDetalle tr:nth-child(even) td {
             background-color: var(--bg-light);
@@ -222,10 +239,11 @@
             display: flex;
             flex-direction: column;
             gap: 3mm;
+            min-width: 0;
         }
         .col-derecha {
-            flex: 0 0 76mm;
-            width: 76mm;
+            flex: 0 0 74mm;
+            width: 74mm;
         }
 
         /* Formas de Pago */
@@ -233,19 +251,21 @@
             width: 100%;
             border-collapse: collapse;
             border: 1px solid var(--primary-color);
+            table-layout: fixed;
         }
         .tabla-forma-pago th {
             background: var(--primary-color);
             color: #ffffff;
-            padding: 1.5mm;
-            font-size: 7.5pt;
+            padding: 1.2mm;
+            font-size: 7pt;
             font-weight: bold;
         }
         .tabla-forma-pago td {
-            padding: 1.5mm;
-            font-size: 7.5pt;
+            padding: 1.2mm;
+            font-size: 7pt;
             text-align: center;
             border: 1px solid var(--border-color);
+            word-break: break-word;
         }
 
         /* Información Adicional */
@@ -253,23 +273,25 @@
             width: 100%;
             border-collapse: collapse;
             border: 1px solid var(--primary-color);
+            table-layout: fixed;
         }
         .BordesTablasAdi th {
             background: var(--primary-color);
             color: #ffffff;
             text-align: left;
-            padding: 1.5mm 2.5mm;
-            font-size: 7.5pt;
+            padding: 1.2mm 2mm;
+            font-size: 7pt;
         }
         .BordesTablasAdi td {
             border: 1px solid var(--border-color);
-            padding: 1.5mm 2.5mm;
-            font-size: 7.5pt;
+            padding: 1.2mm 2mm;
+            font-size: 7pt;
+            word-break: break-word;
         }
         .BordesTablasAdi td.lbl-adi {
             font-weight: bold;
             background-color: var(--bg-light);
-            width: 30mm;
+            width: 28mm;
         }
 
         /* Tabla de Desgloses de Subtotales */
@@ -277,21 +299,23 @@
             width: 100%;
             border-collapse: collapse;
             border: 1px solid var(--primary-color);
+            table-layout: fixed;
         }
         #tblSubtotales td {
-            padding: 1.5mm 2mm;
-            font-size: 7.5pt;
+            padding: 1.2mm 1.8mm;
+            font-size: 7pt;
             border-bottom: 1px solid var(--border-color);
+            word-break: break-word;
         }
         #tblSubtotales td:first-child {
             text-align: left;
             font-weight: bold;
             color: var(--text-dark);
-            width: 60%;
+            width: 62%;
         }
         #tblSubtotales td:last-child {
             text-align: right;
-            width: 40%;
+            width: 38%;
         }
         #tblSubtotales tr:nth-child(even) td {
             background: var(--bg-light);
@@ -300,7 +324,7 @@
             background: var(--primary-color);
             color: #ffffff;
             font-weight: bold;
-            font-size: 8.5pt;
+            font-size: 8pt;
             border-bottom: none;
         }
         #tblSubtotales tr:last-child td:first-child {
@@ -376,25 +400,29 @@
 <div class="seccion-titulo">Detalles de la Factura</div>
 <table class="BordesTablasDetalle">
     <colgroup>
-        <col style="width:11%">
-        <col style="width:11%">
-        <col style="width:8%">
-        <col style="width:28%">
-        <col style="width:18%">
-        <col style="width:10%">
-        <col style="width:6%">
-        <col style="width:8%">
+        <col style="width:9%">   <!-- Cód. Principal -->
+        <col style="width:9%">   <!-- Cód. Auxiliar -->
+        <col style="width:5%">   <!-- Cant. -->
+        <col style="width:6%">   <!-- U. Med. -->
+        <col style="width:22%">  <!-- Descripción -->
+        <col style="width:15%">  <!-- Detalles Adicionales -->
+        <col style="width:8%">   <!-- Placa -->
+        <col style="width:8%">   <!-- P. Unitario -->
+        <col style="width:8%">   <!-- Descuento -->
+        <col style="width:10%">  <!-- Total -->
     </colgroup>
     <thead>
         <tr>
             <th>Cód. Principal</th>
             <th>Cód. Auxiliar</th>
             <th>Cant.</th>
+            <th>U. Med.</th>
             <th style="text-align: left;">Descripción</th>
             <th style="text-align: left;">Detalles Adicionales</th>
-            <th style="text-align: right;">Precio Unitario</th>
+            <th style="text-align: center;">Placa</th>
+            <th style="text-align: right;">P. Unitario</th>
             <th style="text-align: right;">Descuento</th>
-            <th style="text-align: right;">Precio Total</th>
+            <th style="text-align: right;">Total</th>
         </tr>
     </thead>
     <tbody>
@@ -403,8 +431,10 @@
             <td style="text-align: center;">{{this.item}}</td>
             <td style="text-align: center;">{{this.codigoaux}}</td>
             <td style="text-align: center;">{{this.quantity}}</td>
+            <td style="text-align: center;">{{this.unidadMedida}}</td>
             <td>{{this.description}}</td>
             <td>{{this.detinfoadicional}}</td>
+            <td style="text-align: center;">{{this.placa}}</td>
             <td style="text-align: right;">{{this.price}}</td>
             <td style="text-align: right;">{{this.desc}}</td>
             <td style="text-align: right; font-weight: bold;">{{this.totalitem}}</td>
@@ -415,6 +445,17 @@
 
 <div class="seccion-titulo">Detalle de Reembolsos (Compensaciones)</div>
 <table class="BordesTablasDetalle">
+    <colgroup>
+        <col style="width:10%">  <!-- Cod. Doc. Reembolso -->
+        <col style="width:14%">  <!-- Identificación Prov. -->
+        <col style="width:8%">   <!-- Estab. -->
+        <col style="width:8%">   <!-- Pto. Emi. -->
+        <col style="width:12%">  <!-- Secuencial -->
+        <col style="width:11%">  <!-- Fecha Emisión -->
+        <col style="width:12%">  <!-- Base Imp. 0% -->
+        <col style="width:13%">  <!-- Base Imp. Grav. -->
+        <col style="width:12%">  <!-- IVA Liquidado -->
+    </colgroup>
     <thead>
         <tr>
             <th>Cod. Doc. Reembolso</th>

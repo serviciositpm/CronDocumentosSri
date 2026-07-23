@@ -106,6 +106,8 @@ export class XmlToInvoiceParser implements IInvoiceParser {
       const codigoPrincipal = det.codigoPrincipal?.[0] || '0001';
       const codigoAuxiliar = det.codigoAuxiliar?.[0] || '';
       const descripcion = det.descripcion[0];
+      // unidadMedida: campo propio en XML v1.1.0 — opcional en v1.0.0
+      const unidadMedida = det.unidadMedida?.[0] || '';
       const cantidad = parseFloat(det.cantidad[0]);
       const precioUnitario = parseFloat(det.precioUnitario[0]);
       const descuento = det.descuento ? parseFloat(det.descuento[0]) : 0;
@@ -116,25 +118,39 @@ export class XmlToInvoiceParser implements IInvoiceParser {
           valorimpuesto += parseFloat(imp.valor[0]);
         }
       }
+
+      // Detalles adicionales: puede venir como campo libre (Marca, Color, etc.)
+      // o como "Placa" para facturas de transporte (Anexo 25 ficha técnica v2.32)
       let detinfoadicional = '';
+      let placa = '';
       if (det.detallesAdicionales?.[0]?.detAdicional) {
         const partes: string[] = [];
         for (const add of det.detallesAdicionales[0].detAdicional) {
-          partes.push(`${add.$.nombre}: ${add.$.valor}`);
+          const nombre = add.$.nombre as string;
+          const valor  = add.$.valor  as string;
+          // Detectar la placa (Anexo 25: nombre="Placa" o nombre="placa")
+          if (nombre.toLowerCase() === 'placa') {
+            placa = valor;
+          } else {
+            partes.push(`${nombre}: ${valor}`);
+          }
         }
         detinfoadicional = partes.join(' | ');
       }
+
       detalles.push({
         item: codigoPrincipal,
         codigoaux: codigoAuxiliar,
         description: descripcion,
+        unidadMedida,
         quantity: cantidad,
         price: precioUnitario,
         desc: descuento,
         preciosinimp: precioTotalSinImpuesto,
         valorimp: valorimpuesto,
         totalitem: precioTotalSinImpuesto,
-        detinfoadicional
+        detinfoadicional,
+        placa
       });
     }
 

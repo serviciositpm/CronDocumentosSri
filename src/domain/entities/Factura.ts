@@ -2,6 +2,7 @@ export interface DetalleFactura {
     item: string;
     codigoaux: string;
     description: string;
+    unidadMedida: string;    // <unidadMedida> — XML v1.1.0, opcional en v1.0.0
     quantity: number;
     price: number;
     desc: number;
@@ -9,6 +10,7 @@ export interface DetalleFactura {
     valorimp: number;
     totalitem: number;
     detinfoadicional: string;
+    placa: string;           // Anexo 25: placa en detAdicional para transporte comercial
 }
 export interface Reembolso {
   // Campos de identificación del documento de reembolso
